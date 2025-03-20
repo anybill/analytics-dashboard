@@ -15,10 +15,13 @@ declare module 'vue' {
     HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     ItemsList: typeof import('./components/ItemsList.vue')['default']
     LineChart: typeof import('./components/LineChart.vue')['default']
+    Map: typeof import('./components/Map.vue')['default']
     MetricCard: typeof import('./components/MetricCard.vue')['default']
     NavigationBar: typeof import('./components/NavigationBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    StoreCard: typeof import('./components/StoreCard.vue')['default']
+    StoresTable: typeof import('./components/StoresTable.vue')['default']
     TopProductsPieChart: typeof import('./components/TopProductsPieChart.vue')['default']
   }
 }

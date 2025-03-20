@@ -12,7 +12,7 @@
             </div>
           </div>
           <v-progress-linear
-            :model-value="(item.productCount / maxCount) * 100"
+            :model-value="(item.productCount / totalCount) * 100"
             :color="color"
             height="6"
             rounded
@@ -37,9 +37,9 @@ interface Props {
   color?: string;
 }
 
-const maxCount = computed(() => {
+const totalCount = computed(() => {
   if (!props.items.length) return 0;
-  return Math.max(...props.items.map((item: Product) => item.productCount));
+  return props.items.reduce((sum: number, item: Product) => sum + item.productCount, 0);
 });
 
 const props = withDefaults(defineProps<Props>(), {
