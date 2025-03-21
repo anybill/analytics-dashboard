@@ -1,3 +1,4 @@
+import { authService } from '@/services/authService'
 import ApiConfig from "@/config/ApiConfig";
 
 export interface ColumnDto {
@@ -67,12 +68,13 @@ function normalizeKeys<T>(data: any): T {
 
 async function getDataByQuery<T>(queryDto: QueryDto): Promise<T> {
     const url = 'api/v1/analytics/data';
+    const token = await authService.ensureValidToken()
     const response = await fetch(url, {
         method: "POST",
         body: JSON.stringify(queryDto),
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${ApiConfig.authToken}`,
+            "Authorization": `Bearer ${token}`,
             "Access-Control-Allow-Origin": "*",
         },
     });

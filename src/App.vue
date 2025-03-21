@@ -99,6 +99,7 @@ import AppBar from '@/components/AppBar.vue'
 import DataSegment from '@/components/DataSegment.vue'
 import MetricCard from '@/components/MetricCard.vue'
 import { useAnalytics, type AnalyticsData } from '@/composables/useAnalytics'
+import { authService } from '@/services/authService'
 
 const { isLoading, error, fetchAnalytics } = useAnalytics()
 
@@ -120,8 +121,14 @@ async function handleTimeframeChange(timeframe: string) {
 
 // Initial data fetch
 onMounted(async () => {
+  await login();
   data.value = await fetchAnalytics();
 });
+
+// Login
+async function login() {
+  await authService.login();
+}
 </script>
 
 <style>
