@@ -5,13 +5,24 @@
  */
 
 // Composables
-import { createRouter, createWebHistory } from 'vue-router/auto'
-import { setupLayouts } from 'virtual:generated-layouts'
-import { routes } from 'vue-router/auto-routes'
+import { createRouter, createWebHistory } from 'vue-router'
+import AnalyticsView from '@/views/AnalyticsView.vue'
+import RfmView from '@/views/RfmView.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: setupLayouts(routes),
+  history: createWebHistory(),
+  routes: [
+    {
+      path: '/',
+      name: 'analytics',
+      component: AnalyticsView
+    },
+    {
+      path: '/rfm',
+      name: 'rfm',
+      component: RfmView
+    }
+  ]
 })
 
 // Workaround for https://github.com/vitejs/vite/issues/11804

@@ -1,4 +1,4 @@
-import { authService } from '@/services/authService'
+import { authService } from "@/services/authService";
 import ApiConfig from "@/config/ApiConfig";
 
 export interface ColumnDto {
@@ -47,8 +47,18 @@ export interface Store {
     longitude: number;
 }
 
+interface ConsumerMetrics {
+    monetaryAggregationMean: number;
+    basketItemCountAggregationMean: number;
+    basketItemCountAggregationMedian: number;
+    frequencyAggregation: number;
+    recencyAggregation: number;
+    customerLifetimeValue: number;
+}
+
 export interface AnalyticsData {
     metrics: MetricData;
+    consumerMetrics: ConsumerMetrics;
     topItems: Product[];
     topStores: Store[];
 }
@@ -67,8 +77,8 @@ function normalizeKeys<T>(data: any): T {
 }
 
 async function getDataByQuery<T>(queryDto: QueryDto): Promise<T> {
-    const url = 'api/v1/analytics/data';
-    const token = await authService.ensureValidToken()
+    const url = "api/v1/analytics/data";
+    const token = await authService.ensureValidToken();
     const response = await fetch(url, {
         method: "POST",
         body: JSON.stringify(queryDto),
@@ -91,9 +101,9 @@ export function useAnalytics() {
         isLoading.value = true;
         error.value = null;
 
-
         try {
-            const [basketMetrics, topProducts, topStores] = await Promise.all([
+            await authService.ensureValidToken();
+            const [basketMetrics, topProducts, topStores, consumerMetrics] = await Promise.all([
                 getDataByQuery<MetricData[]>({
                     vendorCustomerIds: [ApiConfig.vendorCustomerId],
                     selector: { table: "BasketMetrics", columns: [{ name: "all" }] },
@@ -106,10 +116,15 @@ export function useAnalytics() {
                     vendorCustomerIds: [ApiConfig.vendorCustomerId],
                     selector: { table: "TopStores", columns: [{ name: "all" }] },
                 }),
+                getDataByQuery<ConsumerMetrics[]>({
+                    vendorCustomerIds: [ApiConfig.vendorCustomerId],
+                    selector: { table: "ConsumerMetrics", columns: [{ name: "all" }] },
+                }),
             ]);
 
             return {
                 metrics: basketMetrics[0] ?? {} as MetricData,
+                consumerMetrics: consumerMetrics[0] ?? {} as ConsumerMetrics,
                 topItems: topProducts ?? [],
                 topStores: topStores ?? [],
             };

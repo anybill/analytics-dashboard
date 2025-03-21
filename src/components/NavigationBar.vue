@@ -9,8 +9,9 @@
         <v-list-item
           v-for="(item, i) in navigationItems"
           :key="i"
+          :to="item.path"
           :value="item.value"
-          :active="item.value === 'dashboard'"
+          :active="currentRoute === item.path"
           class="mb-2"
         >
           <v-icon :icon="item.icon" size="24" />
@@ -21,22 +22,31 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const currentRoute = computed(() => route.path);
+
 const navigationItems = [
   {
     icon: "mdi-view-dashboard-outline",
     value: "dashboard",
+    path: "/",
+  },
+  {
+    icon: "mdi-account-group-outline",
+    value: "rfm",
+    path: "/rfm",
   },
   {
     icon: "mdi-clock-outline",
     value: "history",
+    path: "/history",
   },
   {
     icon: "mdi-account-outline",
     value: "profile",
-  },
-  {
-    icon: "mdi-file-document-outline",
-    value: "documents",
+    path: "/profile",
   },
 ];
 </script>
