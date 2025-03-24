@@ -30,7 +30,7 @@
           </v-row>
 
           <!-- Key Performance Indicators Row -->
-          <v-row class="mb-8">
+          <v-row>
             <v-col cols="12">
               <DataSegment>
                 <template #title> KEY PERFORMANCE INDICATORS </template>
