@@ -56,69 +56,25 @@
 
           <!-- Basket Item Count Cards -->
           <v-row class="mb-8">
-            <v-col cols="12" sm="6">
-              <DataSegment>
-                <template #title> BASKET ITEM COUNT MEAN </template>
-                <div class="d-flex align-center justify-center pa-4">
-                  <v-icon size="48" color="info" class="me-4"> mdi-basket </v-icon>
-                  <span class="text-h3">
-                    {{ formatItems(data.consumerMetrics.basketItemCountAggregationMean) }}
-                  </span>
-                </div>
-              </DataSegment>
+            <v-col cols="12" sm="6" lg="3">
+              <MetricCard
+                title="BASKET ITEM COUNT MEAN"
+                :value="
+                  formatCurrency(data.consumerMetrics.basketItemCountAggregationMean)
+                "
+                icon="mdi-basket"
+                icon-color="primary"
+              />
             </v-col>
-            <v-col cols="12" sm="6">
-              <DataSegment>
-                <template #title> BASKET ITEM COUNT MEDIAN </template>
-                <div class="d-flex align-center justify-center pa-4">
-                  <v-icon size="48" color="info" class="me-4">
-                    mdi-basket-outline
-                  </v-icon>
-                  <span class="text-h3">
-                    {{
-                      formatItems(data.consumerMetrics.basketItemCountAggregationMedian)
-                    }}
-                  </span>
-                </div>
-              </DataSegment>
-            </v-col>
-          </v-row>
-
-          <!-- Customer Segments -->
-          <v-row>
-            <v-col cols="12">
-              <DataSegment>
-                <template #title> CUSTOMER SEGMENTS </template>
-                <v-row class="pa-4">
-                  <v-col cols="12" md="4">
-                    <v-card class="segment-card" color="success" variant="outlined">
-                      <v-card-title>Champions</v-card-title>
-                      <v-card-text>
-                        <div class="text-h4 mb-2">32%</div>
-                        <div>High value, frequent buyers</div>
-                      </v-card-text>
-                    </v-card>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-card class="segment-card" color="warning" variant="outlined">
-                      <v-card-title>Loyal Customers</v-card-title>
-                      <v-card-text>
-                        <div class="text-h4 mb-2">45%</div>
-                        <div>Regular, consistent buyers</div>
-                      </v-card-text>
-                    </v-card>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-card class="segment-card" color="error" variant="outlined">
-                      <v-card-title>At Risk</v-card-title>
-                      <v-card-text>
-                        <div class="text-h4 mb-2">23%</div>
-                        <div>Declining engagement</div>
-                      </v-card-text>
-                    </v-card>
-                  </v-col>
-                </v-row>
-              </DataSegment>
+            <v-col cols="12" sm="6" lg="3">
+              <MetricCard
+                title="BASKET ITEM COUNT MEDIAN"
+                :value="
+                  formatCurrency(data.consumerMetrics.basketItemCountAggregationMedian)
+                "
+                icon="mdi-basket-outline"
+                icon-color="primary"
+              />
             </v-col>
           </v-row>
         </template>
@@ -129,7 +85,6 @@
 
 <script setup lang="ts">
 import AppBar from "@/components/AppBar.vue";
-import DataSegment from "@/components/DataSegment.vue";
 import MetricCard from "@/components/MetricCard.vue";
 import { useAnalytics, type AnalyticsData } from "@/composables/useAnalytics";
 
