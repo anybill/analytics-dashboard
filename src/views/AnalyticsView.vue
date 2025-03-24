@@ -4,45 +4,23 @@
 
     <!-- Dashboard Content -->
     <div class="content-wrapper">
-      <v-container
-        class="pa-8"
-        style="max-width: 1440px"
-      >
-        <v-row
-          v-if="isLoading"
-          class="mb-8"
-        >
-          <v-col
-            cols="12"
-            class="d-flex justify-center"
-          >
-            <v-progress-circular
-              indeterminate
-              color="primary"
-            />
+      <v-container class="pa-8" style="max-width: 1440px">
+        <v-row v-if="isLoading" class="mb-8">
+          <v-col cols="12" class="d-flex justify-center">
+            <v-progress-circular indeterminate color="primary" />
           </v-col>
         </v-row>
 
-        <v-row
-          v-else-if="error"
-          class="mb-8"
-        >
+        <v-row v-else-if="error" class="mb-8">
           <v-col cols="12">
-            <v-alert
-              type="error"
-              :text="error"
-            />
+            <v-alert type="error" :text="error" />
           </v-col>
         </v-row>
 
         <template v-else-if="data">
           <!-- Metrics Row -->
           <v-row class="mb-8 metrics-row">
-            <v-col
-              cols="12"
-              sm="6"
-              lg="3"
-            >
+            <v-col cols="12" sm="6" lg="3">
               <MetricCard
                 title="MONETARY MEAN"
                 :value="formatCurrency(data?.metrics?.monetaryMean)"
@@ -50,11 +28,7 @@
                 icon-color="green"
               />
             </v-col>
-            <v-col
-              cols="12"
-              sm="6"
-              lg="3"
-            >
+            <v-col cols="12" sm="6" lg="3">
               <MetricCard
                 title="MONETARY MEDIAN"
                 :value="formatCurrency(data?.metrics?.monetaryMedian)"
@@ -62,11 +36,7 @@
                 icon-color="blue"
               />
             </v-col>
-            <v-col
-              cols="12"
-              sm="6"
-              lg="3"
-            >
+            <v-col cols="12" sm="6" lg="3">
               <MetricCard
                 title="BASKET ITEM COUNT MEAN"
                 :value="formatItems(data?.metrics?.basketItemCountMean)"
@@ -74,11 +44,7 @@
                 icon-color="cyan"
               />
             </v-col>
-            <v-col
-              cols="12"
-              sm="6"
-              lg="3"
-            >
+            <v-col cols="12" sm="6" lg="3">
               <MetricCard
                 title="BASKET ITEM COUNT MEDIAN"
                 :value="formatItems(data?.metrics?.basketItemCountMedian)"
@@ -90,14 +56,8 @@
 
           <!-- Charts and Lists Row -->
           <v-row>
-            <v-col
-              cols="12"
-              lg="8"
-            >
-              <StoreCard
-                title="TOP STORES:"
-                :items="data.topStores"
-              />
+            <v-col cols="12" lg="8">
+              <StoreCard title="TOP STORES:" :items="data.topStores" />
               <DataSegment>
                 <template #title>
                   TOP 5 PRODUCTS FAMILY NON-ALCOHOLIC BEVERAGES
@@ -105,27 +65,18 @@
                 <TopProductsPieChart />
               </DataSegment>
               <DataSegment>
-                <template #title>
-                  CLASS SHARE OVER TIME
-                </template>
+                <template #title> CLASS SHARE OVER TIME </template>
                 <ClassShareChart />
               </DataSegment>
             </v-col>
-            <v-col
-              cols="12"
-              lg="4"
-            >
+            <v-col cols="12" lg="4">
               <ItemsList
                 title="TOP ITEMS:"
                 :items="data.topItems"
                 color="warning"
                 class="mb-6"
               />
-              <ItemsList
-                title="FLOP ITEMS:"
-                :items="data.topItems"
-                color="error"
-              />
+              <ItemsList title="FLOP ITEMS:" :items="data.topItems" color="error" />
             </v-col>
           </v-row>
         </template>
@@ -143,7 +94,6 @@ import DataSegment from '@/components/DataSegment.vue'
 import MetricCard from '@/components/MetricCard.vue'
 import StoreCard from '@/components/StoreCard.vue'
 import { useAnalytics, type AnalyticsData } from '@/composables/useAnalytics'
-import { ref, onMounted } from 'vue'
 
 const { isLoading, error, fetchAnalytics } = useAnalytics()
 const data = ref<AnalyticsData | null>(null)
@@ -196,4 +146,4 @@ onMounted(async () => {
     padding-inline: 24px !important;
   }
 }
-</style> 
+</style>
