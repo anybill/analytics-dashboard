@@ -19,12 +19,72 @@
 
         <template v-else-if="data">
           <!-- Page Title -->
-          <v-row class="mb-8">
+          <v-row class="mb-5">
             <v-col cols="12">
               <h1 class="text-h4 font-weight-bold mb-2">RFM Analysis</h1>
               <p class="text-subtitle-1 text-medium-emphasis">
                 Customer behavior insights based on Recency, Frequency, and Monetary value
               </p>
+            </v-col>
+          </v-row>
+
+          <!-- Customer Segments -->
+          <v-row class="mb-8">
+            <v-col cols="12">
+              <v-card elevation="2" class="chart-card">
+                <v-card-title class="d-flex align-center">
+                  <v-icon icon="mdi-account-group" class="mr-2" color="warning" />
+                  Customer Segments
+                </v-card-title>
+                <v-card-text>
+                  <v-row>
+                    <v-col cols="12" sm="6" md="3">
+                      <div class="text-center">
+                        <v-icon icon="mdi-star" color="warning" size="32" class="mb-2" />
+                        <div class="text-h6 mb-1">VIP Customers</div>
+                        <div class="text-caption text-medium-emphasis">
+                          High CLV & Frequency
+                        </div>
+                      </div>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="3">
+                      <div class="text-center">
+                        <v-icon icon="mdi-alert" color="error" size="32" class="mb-2" />
+                        <div class="text-h6 mb-1">At Risk</div>
+                        <div class="text-caption text-medium-emphasis">Long Recency</div>
+                      </div>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="3">
+                      <div class="text-center">
+                        <v-icon
+                          icon="mdi-trending-up"
+                          color="success"
+                          size="32"
+                          class="mb-2"
+                        />
+                        <div class="text-h6 mb-1">Growth Potential</div>
+                        <div class="text-caption text-medium-emphasis">
+                          High Frequency, Low Basket
+                        </div>
+                      </div>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="3">
+                      <div class="text-center">
+                        <v-icon
+                          icon="mdi-cash-multiple"
+                          color="primary"
+                          size="32"
+                          class="mb-2"
+                        />
+                        <div class="text-h6 mb-1">Bulk Buyers</div>
+                        <div class="text-caption text-medium-emphasis">
+                          High Value, Low Frequency
+                        </div>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
             </v-col>
           </v-row>
 
@@ -201,6 +261,7 @@ function getTrendIndicator(value: number, metric: 'recency' | 'frequency' | 'mon
 }
 
 .chart-card {
+  border-radius: 10px;
   height: 100%;
   transition: transform 0.2s ease-in-out;
 }
