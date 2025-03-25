@@ -1,10 +1,7 @@
 <template>
   <DataSegment>
     <div style="height: 300px">
-      <Pie
-        :data="chartData"
-        :options="chartOptions"
-      />
+      <Pie :data="chartData" :options="chartOptions" />
     </div>
   </DataSegment>
 </template>
@@ -12,6 +9,7 @@
 <script setup lang="ts">
 import { Pie } from "vue-chartjs";
 import type { ChartOptions } from "chart.js";
+import type { ChartData } from "chart.js";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import DataSegment from "./DataSegment.vue";
 import type { CategoryProduct, CategoryBrand } from "@/types/analytics";
@@ -25,15 +23,47 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const chartData = computed(() => {
-  const labels = props.items.map((item: CategoryProduct | CategoryBrand) =>
-    props.type === "product"
-      ? (item as CategoryProduct).product
-      : (item as CategoryBrand).brand
-  );
+// Function to generate a unique color based on index
+function getUniqueColor(index: number): string {
+  const colors = [
+    "#FF6B6B", // Coral Red
+    "#4ECDC4", // Turquoise
+    "#45B7D1", // Sky Blue
+    "#96CEB4", // Sage Green
+    "#FFEEAD", // Cream Yellow
+    "#D4A5A5", // Dusty Rose
+    "#9B59B6", // Purple
+    "#3498DB", // Blue
+    "#E67E22", // Orange
+    "#2ECC71", // Green
+    "#F1C40F", // Yellow
+    "#E74C3C", // Red
+    "#1ABC9C", // Teal
+    "#34495E", // Dark Blue
+    "#7F8C8D", // Gray
+    "#16A085", // Dark Teal
+    "#27AE60", // Dark Green
+    "#2980B9", // Dark Blue
+    "#8E44AD", // Dark Purple
+    "#C0392B", // Dark Red
+  ];
+  return colors[index % colors.length];
+}
 
+const chartData = computed<ChartData<"pie">>(() => {
+  const labels = props.items.map((item: CategoryProduct | CategoryBrand) => {
+    if (props.type === "product" && "product" in item) {
+      return item.product;
+    } else if (props.type === "brand" && "brand" in item) {
+      return item.brand;
+    }
+    return "";
+  });
   const data = props.items.map(
-    (item: CategoryProduct | CategoryBrand) => item.categoryShare
+    (item: CategoryProduct | CategoryBrand) => item.productCount
+  );
+  const backgroundColor = props.items.map(
+    (_: CategoryProduct | CategoryBrand, index: number) => getUniqueColor(index)
   );
 
   return {
@@ -41,51 +71,38 @@ const chartData = computed(() => {
     datasets: [
       {
         data,
-        backgroundColor: [
-          "#98D8C4", // Mint green
-          "#A5DEF2", // Light blue
-          "#F5A7C4", // Pink
-          "#BAB0F5", // Light purple
-          "#FFB5A6", // Light coral
-        ],
+        backgroundColor,
         borderWidth: 0,
+        borderRadius: 4,
       },
     ],
   };
 });
 
-const chartOptions = ref<ChartOptions<"pie">>({
+const chartOptions = computed<ChartOptions<"pie">>(() => ({
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
     legend: {
-      position: "right",
-      align: "center",
+      position: "right" as const,
       labels: {
-        boxWidth: 10,
-        padding: 20,
+        boxWidth: 15,
+        padding: 15,
         font: {
           size: 12,
         },
-        color: "#666666",
       },
     },
     tooltip: {
-      backgroundColor: "white",
-      titleColor: "#333333",
-      bodyColor: "#666666",
-      borderColor: "#e0e0e0",
-      borderWidth: 1,
-      padding: 12,
-      boxPadding: 4,
-      usePointStyle: true,
       callbacks: {
-        label: function (context: { raw: number }) {
+        label: (context: { raw: number; label: string; dataset: { data: number[] } }) => {
           const value = context.raw;
-          return ` ${value.toFixed(1)}%`;
+          const total = context.dataset.data.reduce((a: number, b: number) => a + b, 0);
+          const percentage = ((value / total) * 100).toFixed(1);
+          return `${context.label}: ${percentage}% Marktanteil`;
         },
       },
     },
   },
-});
+}));
 </script>
