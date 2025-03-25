@@ -26,6 +26,20 @@
         </v-dialog>
       </div>
 
+      <!-- Category Selector - Only visible on CategoryView -->
+      <div v-if="isCategoryView" class="input-group ms-8">
+        <div class="text-caption text-grey-darken-1 mb-1">Category</div>
+        <v-select
+          v-model="selectedCategory"
+          :items="availableCategories"
+          variant="outlined"
+          density="compact"
+          hide-details
+          bg-color="white"
+          @update:model-value="handleCategoryChange"
+        />
+      </div>
+
       <v-btn color="black" variant="flat" class="compare-btn ms-8">
         <v-icon size="18" class="mr-2"> mdi-compare </v-icon>
         Compare
@@ -42,13 +56,35 @@
 
 <script setup lang="ts">
 import { format } from "date-fns";
+import { useRoute } from "vue-router";
+import { useAnalytics } from "@/composables/useAnalytics";
+import type { CategoryProduct, AnalyticsData } from "@/types/analytics";
 
 const emit = defineEmits<{
   (e: "timeframe-change", timeframe: string): void;
+  (e: "category-change", category: string): void;
 }>();
+
+const route = useRoute();
+const analytics = useAnalytics();
+const analyticsData = ref<AnalyticsData | null>(null);
 
 const showDatePicker = ref(false);
 const dateRange = ref<string[]>(["2024-01-05", "2025-01-05"]);
+const selectedCategory = ref<string | null>(null);
+
+const isCategoryView = computed(() => route.path === "/category");
+
+const availableCategories = computed(() => {
+  if (!analyticsData.value?.topProductsByCategory) return [];
+  return [
+    ...new Set(
+      analyticsData.value.topProductsByCategory.map(
+        (item: CategoryProduct) => item.category
+      )
+    ),
+  ];
+});
 
 const selectedTimeframe = computed(() => {
   if (dateRange.value.length === 2) {
@@ -67,6 +103,28 @@ function handleDateChange(dates: string[]) {
     emit("timeframe-change", dates.join(","));
   }
 }
+
+function handleCategoryChange(category: string) {
+  selectedCategory.value = category;
+  emit("category-change", category);
+}
+
+// Set initial category if available
+watch(
+  () => analyticsData.value?.topProductsByCategory,
+  (newValue: CategoryProduct[] | undefined) => {
+    if (newValue && newValue.length > 0 && !selectedCategory.value) {
+      selectedCategory.value = newValue[0].category;
+      emit("category-change", selectedCategory.value);
+    }
+  },
+  { immediate: true }
+);
+
+// Fetch initial data
+onMounted(async () => {
+  analyticsData.value = await analytics.fetchAnalytics();
+});
 </script>
 
 <style scoped>

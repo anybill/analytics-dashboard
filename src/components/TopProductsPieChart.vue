@@ -1,10 +1,7 @@
 <template>
   <DataSegment>
     <div style="height: 300px">
-      <Pie
-        :data="chartData"
-        :options="chartOptions"
-      />
+      <Pie :data="chartData" :options="chartOptions" />
     </div>
   </DataSegment>
 </template>
@@ -14,30 +11,44 @@ import { Pie } from "vue-chartjs";
 import type { ChartOptions } from "chart.js";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import DataSegment from "./DataSegment.vue";
+import type { CategoryProduct, CategoryBrand } from "@/types/analytics";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const chartData = ref({
-  labels: [
-    "Pfanner Ice Tea Peach 0.5l",
-    "Volvic Naturelle 750ml",
-    "Coca Cola Classic 0.5l",
-    "Redbull Classic 0.33l",
-    "Other",
-  ],
-  datasets: [
-    {
-      data: [30, 15, 20, 15, 20],
-      backgroundColor: [
-        "#98D8C4", // Mint green
-        "#A5DEF2", // Light blue
-        "#F5A7C4", // Pink
-        "#BAB0F5", // Light purple
-        "#FFB5A6", // Light coral
-      ],
-      borderWidth: 0,
-    },
-  ],
+interface Props {
+  items: (CategoryProduct | CategoryBrand)[];
+  type: "product" | "brand";
+}
+
+const props = defineProps<Props>();
+
+const chartData = computed(() => {
+  const labels = props.items.map((item: CategoryProduct | CategoryBrand) =>
+    props.type === "product"
+      ? (item as CategoryProduct).product
+      : (item as CategoryBrand).brand
+  );
+
+  const data = props.items.map(
+    (item: CategoryProduct | CategoryBrand) => item.categoryShare
+  );
+
+  return {
+    labels,
+    datasets: [
+      {
+        data,
+        backgroundColor: [
+          "#98D8C4", // Mint green
+          "#A5DEF2", // Light blue
+          "#F5A7C4", // Pink
+          "#BAB0F5", // Light purple
+          "#FFB5A6", // Light coral
+        ],
+        borderWidth: 0,
+      },
+    ],
+  };
 });
 
 const chartOptions = ref<ChartOptions<"pie">>({
@@ -66,9 +77,9 @@ const chartOptions = ref<ChartOptions<"pie">>({
       boxPadding: 4,
       usePointStyle: true,
       callbacks: {
-        label: function (context) {
-          const value = context.raw as number;
-          return ` ${value}%`;
+        label: function (context: { raw: number }) {
+          const value = context.raw;
+          return ` ${value.toFixed(1)}%`;
         },
       },
     },

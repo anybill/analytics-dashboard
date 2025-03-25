@@ -1,6 +1,9 @@
 <template>
   <div class="analytics-view">
-    <AppBar @timeframe-change="handleTimeframeChange" />
+    <AppBar
+      @timeframe-change="handleTimeframeChange"
+      @category-change="handleCategoryChange"
+    />
 
     <!-- Dashboard Content -->
     <div class="content-wrapper">
@@ -20,22 +23,32 @@
         <template v-else-if="data">
           <!-- Charts and Lists Row -->
           <v-row>
-            <v-col cols="12" lg="8">
+            <v-col cols="12" lg="12">
               <DataSegment>
                 <template #title>
                   TOP 5 PRODUCTS FAMILY NON-ALCOHOLIC BEVERAGES
                 </template>
-                <TopProductsPieChart />
+                <TopProductsPieChart :items="data.topProductsByCategory" type="product" />
               </DataSegment>
             </v-col>
-            <v-col cols="12" lg="4">
-              <ItemsList
-                title="TOP ITEMS:"
-                :items="data.topItems"
-                color="warning"
-                class="mb-6"
-              />
-              <ItemsList title="FLOP ITEMS:" :items="data.flopItems" color="error" />
+            <v-col cols="12" lg="12">
+              <v-row>
+                <v-col cols="6" lg="6">
+                  <ItemsList
+                    title="TOP ITEMS:"
+                    :items="getTopCategoryData()"
+                    color="warning"
+                    class="mb-6"
+                  />
+                </v-col>
+                <v-col cols="6" lg="6">
+                  <ItemsList
+                    title="FLOP ITEMS:"
+                    :items="getFlopCategoryData()"
+                    color="error"
+                  />
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
         </template>
@@ -49,16 +62,45 @@ import TopProductsPieChart from "@/components/TopProductsPieChart.vue";
 import ItemsList from "@/components/ItemsList.vue";
 import AppBar from "@/components/AppBar.vue";
 import DataSegment from "@/components/DataSegment.vue";
-import StoreCard from "@/components/StoreCard.vue";
 import { useAnalytics } from "@/composables/useAnalytics";
-import type { AnalyticsData } from "@/types/analytics";
+import type { AnalyticsData, CategoryProduct } from "@/types/analytics";
 
 const { isLoading, error, fetchAnalytics } = useAnalytics();
 const data = ref<AnalyticsData | null>(null);
 
+const selectedCategory = ref<string | null>(null);
+
 // Event handlers
 async function handleTimeframeChange(timeframe: string) {
   data.value = await fetchAnalytics(timeframe);
+}
+
+function handleCategoryChange(category: string) {
+  selectedCategory.value = category;
+}
+
+function getTopCategoryData() {
+  if (!selectedCategory.value) return [];
+  return (
+    data.value?.topProductsByCategory?.filter(
+      (item: CategoryProduct) => item.category === selectedCategory.value
+    ) ?? []
+  ).map((item: CategoryProduct) => ({
+    mappedProduct: item.product,
+    productCount: item.productCount,
+  }));
+}
+
+function getFlopCategoryData() {
+  if (!selectedCategory.value) return [];
+  return (
+    data.value?.flopProductsByCategory?.filter(
+      (item: CategoryProduct) => item.category === selectedCategory.value
+    ) ?? []
+  ).map((item: CategoryProduct) => ({
+    mappedProduct: item.product,
+    productCount: item.productCount,
+  }));
 }
 
 // Initial data fetch

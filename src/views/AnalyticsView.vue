@@ -139,7 +139,7 @@ import AppBar from "@/components/AppBar.vue";
 import DataSegment from "@/components/DataSegment.vue";
 import StoreCard from "@/components/StoreCard.vue";
 import { useAnalytics } from "@/composables/useAnalytics";
-import type { AnalyticsData, CategoryProduct, Product } from "@/types/analytics";
+import type { AnalyticsData } from "@/types/analytics";
 
 const { isLoading, error, fetchAnalytics } = useAnalytics();
 const data = ref<AnalyticsData | null>(null);
