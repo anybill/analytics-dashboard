@@ -190,7 +190,8 @@
 <script setup lang="ts">
 import AppBar from "@/components/AppBar.vue";
 import MetricCard from "@/components/MetricCard.vue";
-import { useAnalytics, type AnalyticsData } from "@/composables/useAnalytics";
+import { useAnalytics } from "@/composables/useAnalytics";
+import type { AnalyticsData } from "@/types/analytics";
 
 const { isLoading, error, fetchAnalytics } = useAnalytics();
 const data = ref<AnalyticsData | null>(null);
@@ -221,20 +222,23 @@ function formatItems(value: number): string {
   return `${value.toFixed(1)} items`;
 }
 
-function getTrendIndicator(value: number, metric: 'recency' | 'frequency' | 'monetary' | 'clv' | 'basket'): string {
+function getTrendIndicator(
+  value: number,
+  metric: "recency" | "frequency" | "monetary" | "clv" | "basket"
+): string {
   // This is a placeholder - in a real app, you'd compare with previous period
   const thresholds = {
     recency: { good: 30, bad: 90 },
     frequency: { good: 2, bad: 1 },
     monetary: { good: 100, bad: 50 },
     clv: { good: 500, bad: 200 },
-    basket: { good: 3, bad: 1 }
+    basket: { good: 3, bad: 1 },
   };
 
   const threshold = thresholds[metric];
-  if (value >= threshold.good) return '↑';
-  if (value <= threshold.bad) return '↓';
-  return '→';
+  if (value >= threshold.good) return "↑";
+  if (value <= threshold.bad) return "↓";
+  return "→";
 }
 </script>
 

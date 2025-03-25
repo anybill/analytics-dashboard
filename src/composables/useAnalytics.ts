@@ -1,67 +1,7 @@
 import { authService } from "@/services/authService";
 import ApiConfig from "@/config/ApiConfig";
+import type { AnalyticsData, CategoryBrand, CategoryProduct, ConsumerMetrics, MetricData, Product, QueryDto, Store } from "@/types/analytics";
 
-export interface ColumnDto {
-    name: string;
-    aggregator?: string;
-}
-
-export interface ExpressionDto {
-    column: string;
-    operator: string;
-    values: string[];
-}
-
-export interface SelectorDto {
-    table: string;
-    columns: ColumnDto[];
-}
-
-export interface QueryDto {
-    vendorCustomerIds: string[];
-    selector: SelectorDto;
-    expressions?: ExpressionDto[];
-}
-
-export interface MetricData {
-    monetaryMean: number;
-    monetaryMedian: number;
-    basketItemCountMean: number;
-    basketItemCountMedian: number;
-}
-
-export interface Product {
-    mappedProduct: string;
-    productCount: number;
-}
-
-export interface Store {
-    storeName: string;
-    storeVisits: number;
-    country: string;
-    city: string;
-    zip: string;
-    street: string;
-    number: string;
-    latitude: number;
-    longitude: number;
-}
-
-interface ConsumerMetrics {
-    monetaryAggregationMean: number;
-    basketItemCountAggregationMean: number;
-    basketItemCountAggregationMedian: number;
-    frequencyAggregation: number;
-    recencyAggregation: number;
-    customerLifetimeValue: number;
-}
-
-export interface AnalyticsData {
-    metrics: MetricData;
-    consumerMetrics: ConsumerMetrics;
-    topItems: Product[];
-    topStores: Store[];
-}
 
 function normalizeKeys<T>(data: any): T {
     if (Array.isArray(data)) {
@@ -84,7 +24,7 @@ async function getDataByQuery<T>(queryDto: QueryDto): Promise<T> {
         body: JSON.stringify(queryDto),
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             "Access-Control-Allow-Origin": "*",
         },
     });
@@ -103,7 +43,7 @@ export function useAnalytics() {
 
         try {
             await authService.ensureValidToken();
-            const [basketMetrics, topProducts, topStores, consumerMetrics] = await Promise.all([
+            const [basketMetrics, topProducts, topStores, consumerMetrics, topCategories, flopCategories, topBrands, flopBrands, flopProducts] = await Promise.all([
                 getDataByQuery<MetricData[]>({
                     vendorCustomerIds: [ApiConfig.vendorCustomerId],
                     selector: { table: "BasketMetrics", columns: [{ name: "all" }] },
@@ -120,15 +60,53 @@ export function useAnalytics() {
                     vendorCustomerIds: [ApiConfig.vendorCustomerId],
                     selector: { table: "ConsumerMetrics", columns: [{ name: "all" }] },
                 }),
+                getDataByQuery<CategoryProduct[]>({
+                    vendorCustomerIds: [ApiConfig.vendorCustomerId],
+                    selector: { table: "TopNProductsPerCategory", columns: [{ name: "all" }] },
+                }),
+                getDataByQuery<CategoryProduct[]>({
+                    vendorCustomerIds: [ApiConfig.vendorCustomerId],
+                    selector: { table: "FlopNProductsPerCategory", columns: [{ name: "all" }] },
+                }),
+                getDataByQuery<CategoryBrand[]>({
+                    vendorCustomerIds: [ApiConfig.vendorCustomerId],
+                    selector: { table: "TopNBrandsPerCategory", columns: [{ name: "all" }] },
+                }),
+                getDataByQuery<CategoryBrand[]>({
+                    vendorCustomerIds: [ApiConfig.vendorCustomerId],
+                    selector: { table: "FlopNBrandsPerCategory", columns: [{ name: "all" }] },
+                }),
+                getDataByQuery<Product[]>({
+                    vendorCustomerIds: [ApiConfig.vendorCustomerId],
+                    selector: { table: "FlopNProducts", columns: [{ name: "all" }] },
+                })
             ]);
 
             return {
-                metrics: basketMetrics[0] ?? {} as MetricData,
-                consumerMetrics: consumerMetrics[0] ?? {} as ConsumerMetrics,
-                topItems: topProducts ?? [],
-                topStores: topStores ?? [],
+                metrics: basketMetrics?.[0] ?? ({} as MetricData),
+                consumerMetrics: consumerMetrics?.[0] ?? ({} as ConsumerMetrics),
+                topItems: Array.isArray(topProducts)
+                    ? topProducts.sort((a, b) => b.productCount - a.productCount)
+                    : [],
+                topStores: Array.isArray(topStores)
+                    ? topStores.sort((a, b) => b.storeVisits - a.storeVisits)
+                    : [],
+                flopItems: Array.isArray(flopProducts)
+                    ? flopProducts.sort((a, b) => b.productCount - a.productCount)
+                    : [],
+                topProductsByCategory: Array.isArray(topCategories)
+                    ? topCategories.sort((a, b) => b.productCount - a.productCount)
+                    : [],
+                flopProductsByCategory: Array.isArray(flopCategories)
+                    ? flopCategories.sort((a, b) => b.productCount - a.productCount)
+                    : [],
+                topBrandsByCategory: Array.isArray(topBrands)
+                    ? topBrands.sort((a, b) => b.productCount - a.productCount)
+                    : [],
+                flopBrandsByCategory: Array.isArray(flopBrands)
+                    ? flopBrands.sort((a, b) => b.productCount - a.productCount)
+                    : [],
             };
-
         } catch (e) {
             error.value = e instanceof Error ? e.message : "An error occurred";
             return {} as AnalyticsData;

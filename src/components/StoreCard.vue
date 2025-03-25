@@ -11,7 +11,7 @@
 
       <!-- List on the Right -->
       <v-col cols="6">
-        <v-list class="pa-0" max-width="400">
+        <v-list class="pa-0" max-width="600">
           <v-list-item v-for="(item, index) in items" :key="index" class="px-0">
             <template #prepend>
               <div

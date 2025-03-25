@@ -18,113 +18,29 @@
         </v-row>
 
         <template v-else-if="data">
-          <v-row>
-            <v-col cols="12">
-              <DataSegment>
-                <template #title> KEY PERFORMANCE INDICATORS </template>
-                <div class="kpi-grid">
-                  <div class="kpi-card">
-                    <div class="kpi-header">
-                      <div class="kpi-icon blue">
-                        <v-icon>mdi-cart-outline</v-icon>
-                      </div>
-                      <div class="kpi-change positive">+12.5%</div>
-                    </div>
-                    <div class="kpi-value">
-                      {{ formatCurrency(data?.metrics?.monetaryMean) }}
-                    </div>
-                    <div class="kpi-title">Average Order Value</div>
-                  </div>
-
-                  <div class="kpi-card">
-                    <div class="kpi-header">
-                      <div class="kpi-icon purple">
-                        <v-icon>mdi-basket</v-icon>
-                      </div>
-                      <div class="kpi-change positive">+8.2%</div>
-                    </div>
-                    <div class="kpi-value">
-                      {{ formatItems(data?.metrics?.basketItemCountMean) }}
-                    </div>
-                    <div class="kpi-title">Average Basket Size</div>
-                  </div>
-
-                  <div class="kpi-card">
-                    <div class="kpi-header">
-                      <div class="kpi-icon green">
-                        <v-icon>mdi-cash-multiple</v-icon>
-                      </div>
-                      <div class="kpi-change positive">+15.3%</div>
-                    </div>
-                    <div class="kpi-value">
-                      {{
-                        formatCurrency(data?.consumerMetrics?.customerLifetimeValue || 0)
-                      }}
-                    </div>
-                    <div class="kpi-title">Customer Lifetime Value</div>
-                  </div>
-
-                  <div class="kpi-card">
-                    <div class="kpi-header">
-                      <div class="kpi-icon orange">
-                        <v-icon>mdi-clock-outline</v-icon>
-                      </div>
-                      <div class="kpi-change negative">-5.7%</div>
-                    </div>
-                    <div class="kpi-value">
-                      {{ formatDays(data?.consumerMetrics?.recencyAggregation || 0) }}
-                    </div>
-                    <div class="kpi-title">Average Recency</div>
-                  </div>
-
-                  <div class="kpi-card">
-                    <div class="kpi-header">
-                      <div class="kpi-icon cyan">
-                        <v-icon>mdi-repeat</v-icon>
-                      </div>
-                      <div class="kpi-change positive">+3.2%</div>
-                    </div>
-                    <div class="kpi-value">
-                      {{
-                        formatFrequency(data?.consumerMetrics?.frequencyAggregation || 0)
-                      }}
-                    </div>
-                    <div class="kpi-title">Purchase Frequency</div>
-                  </div>
-                </div>
-              </DataSegment>
-            </v-col>
-          </v-row>
-
           <!-- Charts and Lists Row -->
           <v-row>
-            <v-col cols="12" lg="12">
+            <v-col cols="12" lg="8">
               <StoreCard title="TOP STORES:" :items="data.topStores" />
-              <!-- <DataSegment>
+              <DataSegment>
                 <template #title>
                   TOP 5 PRODUCTS FAMILY NON-ALCOHOLIC BEVERAGES
                 </template>
                 <TopProductsPieChart />
               </DataSegment>
-              <DataSegment>
+              <!-- <DataSegment>
                 <template #title> CLASS SHARE OVER TIME </template>
                 <ClassShareChart />
               </DataSegment> -->
             </v-col>
-            <v-col cols="12" lg="12">
-              <v-row>
-                <v-col cols="6" lg="6">
-                  <ItemsList
-                    title="TOP ITEMS:"
-                    :items="data.topItems"
-                    color="warning"
-                    class="mb-6"
-                  />
-                </v-col>
-                <v-col cols="6" lg="6">
-                  <ItemsList title="FLOP ITEMS:" :items="data.flopItems" color="error" />
-                </v-col>
-              </v-row>
+            <v-col cols="12" lg="4">
+              <ItemsList
+                title="TOP ITEMS:"
+                :items="data.topItems"
+                color="warning"
+                class="mb-6"
+              />
+              <ItemsList title="FLOP ITEMS:" :items="data.flopItems" color="error" />
             </v-col>
           </v-row>
         </template>
@@ -134,36 +50,16 @@
 </template>
 
 <script setup lang="ts">
+import TopProductsPieChart from "@/components/TopProductsPieChart.vue";
 import ItemsList from "@/components/ItemsList.vue";
 import AppBar from "@/components/AppBar.vue";
 import DataSegment from "@/components/DataSegment.vue";
 import StoreCard from "@/components/StoreCard.vue";
 import { useAnalytics } from "@/composables/useAnalytics";
-import type { AnalyticsData, CategoryProduct, Product } from "@/types/analytics";
+import type { AnalyticsData } from "@/types/analytics";
 
 const { isLoading, error, fetchAnalytics } = useAnalytics();
 const data = ref<AnalyticsData | null>(null);
-
-// Format helpers
-function formatCurrency(value?: number): string {
-  const num = parseFloat(value?.toString() || "0") || 0;
-  return `${num.toFixed(2)} €`;
-}
-
-function formatItems(value?: number): string {
-  const num = parseFloat(value?.toString() || "0") || 0;
-  return `${num.toFixed(1)} items`;
-}
-
-function formatDays(value?: number): string {
-  const num = parseFloat(value?.toString() || "0") || 0;
-  return `${num.toFixed(1)} days`;
-}
-
-function formatFrequency(value?: number): string {
-  const num = parseFloat(value?.toString() || "0") || 0;
-  return `${num.toFixed(2)} per month`;
-}
 
 // Event handlers
 async function handleTimeframeChange(timeframe: string) {
@@ -188,28 +84,28 @@ onMounted(async () => {
   justify-content: center;
 }
 
-/* KPI Grid */
-.kpi-grid {
+/* Category metrics */
+.category-metrics {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
 }
 
-.kpi-card {
+.metric-card {
   background: white;
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.kpi-header {
+.metric-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
 }
 
-.kpi-icon {
+.metric-icon {
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -219,56 +115,40 @@ onMounted(async () => {
   color: white;
 }
 
-.kpi-icon.blue {
+.metric-icon.blue {
   background-color: #3498db;
 }
 
-.kpi-icon.purple {
+.metric-icon.purple {
   background-color: #9b59b6;
 }
 
-.kpi-icon.green {
+.metric-icon.green {
   background-color: #2ecc71;
 }
 
-.kpi-icon.orange {
+.metric-icon.orange {
   background-color: #e67e22;
 }
 
-.kpi-icon.cyan {
+.metric-icon.cyan {
   background-color: #1abc9c;
 }
 
-.kpi-change {
-  font-size: 0.875rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-}
-
-.kpi-change.positive {
-  color: #2ecc71;
-  background: rgba(46, 204, 113, 0.1);
-}
-
-.kpi-change.negative {
-  color: #e74c3c;
-  background: rgba(231, 76, 60, 0.1);
-}
-
-.kpi-value {
+.metric-value {
   font-size: 1.5rem;
   font-weight: 600;
   color: #2c3e50;
   margin-bottom: 0.5rem;
 }
 
-.kpi-title {
+.metric-title {
   font-size: 0.875rem;
   color: #7f8c8d;
 }
 
-/* Product insights */
-.product-insights-container {
+/* Category insights */
+.category-insights {
   display: grid;
   grid-template-columns: 60% 40%;
   gap: 1.5rem;

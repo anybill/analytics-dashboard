@@ -8,6 +8,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import AnalyticsView from '@/views/AnalyticsView.vue'
 import RfmView from '@/views/RfmView.vue'
+import CategoryView from '@/views/CategoryView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -21,6 +22,11 @@ const router = createRouter({
       path: '/rfm',
       name: 'rfm',
       component: RfmView
+    },
+    {
+      path: '/category',
+      name: 'category',
+      component: CategoryView
     }
   ]
 })

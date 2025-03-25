@@ -39,9 +39,9 @@ const navigationItems = [
     path: "/rfm",
   },
   {
-    icon: "mdi-clock-outline",
-    value: "history",
-    path: "/history",
+    icon: "mdi-shape-outline",
+    value: "category",
+    path: "/category",
   },
   {
     icon: "mdi-account-outline",

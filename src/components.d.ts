@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppBar: typeof import('./components/AppBar.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
+    BasketDistributionChart: typeof import('./components/charts/BasketDistributionChart.vue')['default']
     ChartSegment: typeof import('./components/ChartSegment.vue')['default']
     ClassShareChart: typeof import('./components/ClassShareChart.vue')['default']
     DataSegment: typeof import('./components/DataSegment.vue')['default']
