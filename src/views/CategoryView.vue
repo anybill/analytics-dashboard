@@ -28,7 +28,7 @@
                 <template #title>
                   TOP 5 PRODUCTS FAMILY NON-ALCOHOLIC BEVERAGES
                 </template>
-                <TopProductsPieChart :items="data.topProductsByCategory" type="product" />
+                <TopProductsPieChart :items="topCategoryData" type="product" />
               </DataSegment>
             </v-col>
             <v-col cols="12" lg="12">
@@ -78,6 +78,15 @@ async function handleTimeframeChange(timeframe: string) {
 function handleCategoryChange(category: string) {
   selectedCategory.value = category;
 }
+
+const topCategoryData = computed(() => {
+  if (!selectedCategory.value) return [];
+  return (
+    data.value?.topProductsByCategory?.filter(
+      (item: CategoryProduct) => item.category === selectedCategory.value
+    ) ?? []
+  );
+});
 
 function getTopCategoryData() {
   if (!selectedCategory.value) return [];
