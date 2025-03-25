@@ -81,6 +81,54 @@ export function useAnalytics() {
                     selector: { table: "FlopNProducts", columns: [{ name: "all" }] },
                 })
             ]);
+            // Capitalize first letter of product and brand names
+            if (Array.isArray(topProducts)) {
+                topProducts.forEach(product => {
+                    if (product.mappedProduct) {
+                        product.mappedProduct = product.mappedProduct.charAt(0).toUpperCase() + product.mappedProduct.slice(1);
+                    }
+                });
+            }
+
+            if (Array.isArray(flopProducts)) {
+                flopProducts.forEach(product => {
+                    if (product.mappedProduct) {
+                        product.mappedProduct = product.mappedProduct.charAt(0).toUpperCase() + product.mappedProduct.slice(1);
+                    }
+                });
+            }
+
+            if (Array.isArray(topCategories)) {
+                topCategories.forEach(item => {
+                    if (item.product) {
+                        item.product = item.product.charAt(0).toUpperCase() + item.product.slice(1);
+                    }
+                });
+            }
+
+            if (Array.isArray(flopCategories)) {
+                flopCategories.forEach(item => {
+                    if (item.product) {
+                        item.product = item.product.charAt(0).toUpperCase() + item.product.slice(1);
+                    }
+                });
+            }
+
+            if (Array.isArray(topBrands)) {
+                topBrands.forEach(item => {
+                    if (item.brand) {
+                        item.brand = item.brand.charAt(0).toUpperCase() + item.brand.slice(1);
+                    }
+                });
+            }
+
+            if (Array.isArray(flopBrands)) {
+                flopBrands.forEach(item => {
+                    if (item.brand) {
+                        item.brand = item.brand.charAt(0).toUpperCase() + item.brand.slice(1);
+                    }
+                });
+            }
 
             return {
                 metrics: basketMetrics?.[0] ?? ({} as MetricData),

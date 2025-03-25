@@ -51,6 +51,35 @@
               </v-row>
             </v-col>
           </v-row>
+          <v-row>
+            <v-col cols="12" lg="12">
+              <DataSegment>
+                <template #title>
+                  TOP MARKEN NACH KATEGORIE {{ selectedCategory.toUpperCase() }}
+                </template>
+                <TopProductsPieChart :items="topBrandData" type="brand" />
+              </DataSegment>
+            </v-col>
+            <v-col cols="12" lg="12">
+              <v-row>
+                <v-col cols="6" lg="6">
+                  <ItemsList
+                    title="TOP MARKEN:"
+                    :items="getTopBrandData()"
+                    color="warning"
+                    class="mb-6"
+                  />
+                </v-col>
+                <v-col cols="6" lg="6">
+                  <ItemsList
+                    title="FLOP MARKEN:"
+                    :items="getFlopBrandData()"
+                    color="error"
+                  />
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
         </template>
       </v-container>
     </div>
@@ -63,7 +92,7 @@ import ItemsList from "@/components/ItemsList.vue";
 import AppBar from "@/components/AppBar.vue";
 import DataSegment from "@/components/DataSegment.vue";
 import { useAnalytics } from "@/composables/useAnalytics";
-import type { AnalyticsData, CategoryProduct } from "@/types/analytics";
+import type { AnalyticsData, CategoryBrand, CategoryProduct } from "@/types/analytics";
 
 const { isLoading, error, fetchAnalytics } = useAnalytics();
 const data = ref<AnalyticsData | null>(null);
@@ -88,6 +117,15 @@ const topCategoryData = computed(() => {
   );
 });
 
+const topBrandData = computed(() => {
+  if (!selectedCategory.value) return [];
+  return (
+    data.value?.topBrandsByCategory?.filter(
+      (item: CategoryBrand) => item.category === selectedCategory.value
+    ) ?? []
+  );
+});
+
 function getTopCategoryData() {
   if (!selectedCategory.value) return [];
   return (
@@ -96,6 +134,30 @@ function getTopCategoryData() {
     ) ?? []
   ).map((item: CategoryProduct) => ({
     mappedProduct: item.product,
+    productCount: item.productCount,
+  }));
+}
+
+function getTopBrandData() {
+  if (!selectedCategory.value) return [];
+  return (
+    data.value?.topBrandsByCategory?.filter(
+      (item: CategoryProduct) => item.category === selectedCategory.value
+    ) ?? []
+  ).map((item: CategoryBrand) => ({
+    mappedProduct: item.brand,
+    productCount: item.productCount,
+  }));
+}
+
+function getFlopBrandData() {
+  if (!selectedCategory.value) return [];
+  return (
+    data.value?.flopBrandsByCategory?.filter(
+      (item: CategoryBrand) => item.category === selectedCategory.value
+    ) ?? []
+  ).map((item: CategoryBrand) => ({
+    mappedProduct: item.brand,
     productCount: item.productCount,
   }));
 }
