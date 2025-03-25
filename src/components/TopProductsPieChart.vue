@@ -1,7 +1,10 @@
 <template>
   <DataSegment>
     <div style="height: 300px">
-      <Pie :data="chartData" :options="chartOptions" />
+      <Pie
+        :data="chartData"
+        :options="chartOptions"
+      />
     </div>
   </DataSegment>
 </template>

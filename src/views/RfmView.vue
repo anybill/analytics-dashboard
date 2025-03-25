@@ -4,16 +4,34 @@
 
     <!-- Dashboard Content -->
     <div class="content-wrapper">
-      <v-container class="pa-8" style="max-width: 1440px">
-        <v-row v-if="isLoading" class="mb-8">
-          <v-col cols="12" class="d-flex justify-center">
-            <v-progress-circular indeterminate color="primary" />
+      <v-container
+        class="pa-8"
+        style="max-width: 1440px"
+      >
+        <v-row
+          v-if="isLoading"
+          class="mb-8"
+        >
+          <v-col
+            cols="12"
+            class="d-flex justify-center"
+          >
+            <v-progress-circular
+              indeterminate
+              color="primary"
+            />
           </v-col>
         </v-row>
 
-        <v-row v-else-if="error" class="mb-8">
+        <v-row
+          v-else-if="error"
+          class="mb-8"
+        >
           <v-col cols="12">
-            <v-alert type="error" :text="error" />
+            <v-alert
+              type="error"
+              :text="error"
+            />
           </v-col>
         </v-row>
 
@@ -21,9 +39,11 @@
           <!-- Page Title -->
           <v-row class="mb-5">
             <v-col cols="12">
-              <h1 class="text-h4 font-weight-bold mb-2">RFM Analysis</h1>
+              <h1 class="text-h4 font-weight-bold mb-2">
+                RFM-Analyse
+              </h1>
               <p class="text-subtitle-1 text-medium-emphasis">
-                Customer behavior insights based on Recency, Frequency, and Monetary value
+                Kundenerkenntnisse basierend auf Aktualität, Häufigkeit und monetärem Wert
               </p>
             </v-col>
           </v-row>
@@ -31,30 +51,65 @@
           <!-- Customer Segments -->
           <v-row class="mb-8">
             <v-col cols="12">
-              <v-card elevation="2" class="chart-card">
+              <v-card
+                elevation="2"
+                class="chart-card"
+              >
                 <v-card-title class="d-flex align-center">
-                  <v-icon icon="mdi-account-group" class="mr-2" color="warning" />
-                  Customer Segments
+                  <v-icon
+                    icon="mdi-account-group"
+                    class="mr-2"
+                    color="warning"
+                  />
+                  Kundensegmente
                 </v-card-title>
                 <v-card-text>
                   <v-row>
-                    <v-col cols="12" sm="6" md="3">
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="3"
+                    >
                       <div class="text-center">
-                        <v-icon icon="mdi-star" color="warning" size="32" class="mb-2" />
-                        <div class="text-h6 mb-1">VIP Customers</div>
+                        <v-icon
+                          icon="mdi-star"
+                          color="warning"
+                          size="32"
+                          class="mb-2"
+                        />
+                        <div class="text-h6 mb-1">
+                          VIP-Kunden
+                        </div>
                         <div class="text-caption text-medium-emphasis">
-                          High CLV & Frequency
+                          Hoher Kunden Gesamteinkaufswert & Häufigkeit
                         </div>
                       </div>
                     </v-col>
-                    <v-col cols="12" sm="6" md="3">
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="3"
+                    >
                       <div class="text-center">
-                        <v-icon icon="mdi-alert" color="error" size="32" class="mb-2" />
-                        <div class="text-h6 mb-1">At Risk</div>
-                        <div class="text-caption text-medium-emphasis">Long Recency</div>
+                        <v-icon
+                          icon="mdi-alert"
+                          color="error"
+                          size="32"
+                          class="mb-2"
+                        />
+                        <div class="text-h6 mb-1">
+                          Risikokunden
+                        </div>
+                        <div class="text-caption text-medium-emphasis">
+                          Lange Aktualität
+                        </div>
                       </div>
                     </v-col>
-                    <v-col cols="12" sm="6" md="3">
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="3"
+                    >
                       <div class="text-center">
                         <v-icon
                           icon="mdi-trending-up"
@@ -62,13 +117,19 @@
                           size="32"
                           class="mb-2"
                         />
-                        <div class="text-h6 mb-1">Growth Potential</div>
+                        <div class="text-h6 mb-1">
+                          Wachstumspotenzial
+                        </div>
                         <div class="text-caption text-medium-emphasis">
-                          High Frequency, Low Basket
+                          Hohe Häufigkeit, Niedriger Warenkorb
                         </div>
                       </div>
                     </v-col>
-                    <v-col cols="12" sm="6" md="3">
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="3"
+                    >
                       <div class="text-center">
                         <v-icon
                           icon="mdi-cash-multiple"
@@ -76,9 +137,11 @@
                           size="32"
                           class="mb-2"
                         />
-                        <div class="text-h6 mb-1">Bulk Buyers</div>
+                        <div class="text-h6 mb-1">
+                          Großkäufer
+                        </div>
                         <div class="text-caption text-medium-emphasis">
-                          High Value, Low Frequency
+                          Hoher Wert, Niedrige Häufigkeit
                         </div>
                       </div>
                     </v-col>
@@ -90,10 +153,14 @@
 
           <!-- RFM Metrics Row -->
           <v-row class="mb-8 metrics-row">
-            <v-col cols="12" sm="6" lg="3">
+            <v-col
+              cols="12"
+              sm="6"
+              lg="3"
+            >
               <MetricCard
-                title="Recency"
-                subtitle="Average days since last purchase"
+                title="Aktualität"
+                subtitle="Durchschnittliche Tage seit dem letzten Kauf"
                 :value="formatDays(data.consumerMetrics.recencyAggregation)"
                 icon="mdi-clock-outline"
                 icon-color="info"
@@ -102,10 +169,14 @@
                 "
               />
             </v-col>
-            <v-col cols="12" sm="6" lg="3">
+            <v-col
+              cols="12"
+              sm="6"
+              lg="3"
+            >
               <MetricCard
-                title="Frequency"
-                subtitle="Average visits per month"
+                title="Häufigkeit"
+                subtitle="Durchschnittliche Besuche pro Monat"
                 :value="formatFrequency(data.consumerMetrics.frequencyAggregation)"
                 icon="mdi-repeat"
                 icon-color="success"
@@ -117,10 +188,14 @@
                 "
               />
             </v-col>
-            <v-col cols="12" sm="6" lg="3">
+            <v-col
+              cols="12"
+              sm="6"
+              lg="3"
+            >
               <MetricCard
-                title="Monetary"
-                subtitle="Average purchase value"
+                title="Monetär"
+                subtitle="Durchschnittlicher Kaufwert"
                 :value="formatCurrency(data.consumerMetrics.monetaryAggregationMean)"
                 icon="mdi-currency-eur"
                 icon-color="warning"
@@ -132,10 +207,14 @@
                 "
               />
             </v-col>
-            <v-col cols="12" sm="6" lg="3">
+            <v-col
+              cols="12"
+              sm="6"
+              lg="3"
+            >
               <MetricCard
-                title="Customer Lifetime Value"
-                subtitle="Total value per customer"
+                title="Kunden Gesamteinkaufswert"
+                subtitle="Gesamtwert pro Kunde"
                 :value="formatCurrency(data.consumerMetrics.customerLifetimeValue)"
                 icon="mdi-account-cash"
                 icon-color="primary"
@@ -148,10 +227,14 @@
 
           <!-- Charts Row -->
           <v-row class="mb-8">
-            <v-col cols="12" sm="6" lg="3">
+            <v-col
+              cols="12"
+              sm="6"
+              lg="3"
+            >
               <MetricCard
-                title="Average Basket Size"
-                subtitle="Mean items per purchase"
+                title="Durchschnittliche Warenkorbgröße"
+                subtitle="Durchschnittliche Anzahl Artikel pro Einkauf"
                 :value="formatItems(data.consumerMetrics.basketItemCountAggregationMean)"
                 icon="mdi-basket"
                 icon-color="primary"
@@ -163,10 +246,14 @@
                 "
               />
             </v-col>
-            <v-col cols="12" sm="6" lg="3">
+            <v-col
+              cols="12"
+              sm="6"
+              lg="3"
+            >
               <MetricCard
-                title="Median Basket Size"
-                subtitle="The middle value of items per purchase"
+                title="Median Warenkorbgröße"
+                subtitle="Der mittlere Wert der Artikel pro Kauf"
                 :value="
                   formatItems(data.consumerMetrics.basketItemCountAggregationMedian)
                 "
@@ -207,11 +294,11 @@ onMounted(async () => {
 });
 
 function formatDays(value: number): string {
-  return `${value.toFixed(1)} days`;
+  return `${value.toFixed(1)} Tage`;
 }
 
 function formatFrequency(value: number): string {
-  return `${value.toFixed(1)} per month`;
+  return `${value.toFixed(1)} pro Monat`;
 }
 
 function formatCurrency(value: number): string {
@@ -219,7 +306,7 @@ function formatCurrency(value: number): string {
 }
 
 function formatItems(value: number): string {
-  return `${value.toFixed(1)} items`;
+  return `${value.toFixed(1)} Artikel`;
 }
 
 function getTrendIndicator(

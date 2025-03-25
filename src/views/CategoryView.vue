@@ -26,7 +26,7 @@
             <v-col cols="12" lg="12">
               <DataSegment>
                 <template #title>
-                  TOP 5 PRODUCTS FAMILY NON-ALCOHOLIC BEVERAGES
+                  TOP PRODUKTE NACH KATEGORIE {{ selectedCategory.toUpperCase() }}
                 </template>
                 <TopProductsPieChart :items="topCategoryData" type="product" />
               </DataSegment>
@@ -35,7 +35,7 @@
               <v-row>
                 <v-col cols="6" lg="6">
                   <ItemsList
-                    title="TOP ITEMS:"
+                    title="TOP PRODUKTE:"
                     :items="getTopCategoryData()"
                     color="warning"
                     class="mb-6"
@@ -43,7 +43,7 @@
                 </v-col>
                 <v-col cols="6" lg="6">
                   <ItemsList
-                    title="FLOP ITEMS:"
+                    title="FLOP PRODUKTE:"
                     :items="getFlopCategoryData()"
                     color="error"
                   />

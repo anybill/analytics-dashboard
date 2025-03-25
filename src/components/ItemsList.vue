@@ -19,7 +19,7 @@
             class="mb-1"
           />
           <div class="text-caption text-grey-darken-1 text-right">
-            {{ item.productCount.toLocaleString() }} purchases
+            {{ item.productCount.toLocaleString() }} Käufe
           </div>
         </v-list-item-subtitle>
       </v-list-item>

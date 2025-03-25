@@ -4,16 +4,34 @@
 
     <!-- Dashboard Content -->
     <div class="content-wrapper">
-      <v-container class="pa-8" style="max-width: 1440px">
-        <v-row v-if="isLoading" class="mb-8">
-          <v-col cols="12" class="d-flex justify-center">
-            <v-progress-circular indeterminate color="primary" />
+      <v-container
+        class="pa-8"
+        style="max-width: 1440px"
+      >
+        <v-row
+          v-if="isLoading"
+          class="mb-8"
+        >
+          <v-col
+            cols="12"
+            class="d-flex justify-center"
+          >
+            <v-progress-circular
+              indeterminate
+              color="primary"
+            />
           </v-col>
         </v-row>
 
-        <v-row v-else-if="error" class="mb-8">
+        <v-row
+          v-else-if="error"
+          class="mb-8"
+        >
           <v-col cols="12">
-            <v-alert type="error" :text="error" />
+            <v-alert
+              type="error"
+              :text="error"
+            />
           </v-col>
         </v-row>
 
@@ -21,19 +39,25 @@
           <v-row>
             <v-col cols="12">
               <DataSegment>
-                <template #title> KEY PERFORMANCE INDICATORS </template>
+                <template #title>
+                  KENNZAHLEN
+                </template>
                 <div class="kpi-grid">
                   <div class="kpi-card">
                     <div class="kpi-header">
                       <div class="kpi-icon blue">
                         <v-icon>mdi-cart-outline</v-icon>
                       </div>
-                      <div class="kpi-change positive">+12.5%</div>
+                      <div class="kpi-change positive">
+                        +12.5%
+                      </div>
                     </div>
                     <div class="kpi-value">
                       {{ formatCurrency(data?.metrics?.monetaryMean) }}
                     </div>
-                    <div class="kpi-title">Average Order Value</div>
+                    <div class="kpi-title">
+                      Durchschnittlicher Bestellwert
+                    </div>
                   </div>
 
                   <div class="kpi-card">
@@ -41,12 +65,16 @@
                       <div class="kpi-icon purple">
                         <v-icon>mdi-basket</v-icon>
                       </div>
-                      <div class="kpi-change positive">+8.2%</div>
+                      <div class="kpi-change positive">
+                        +8.2%
+                      </div>
                     </div>
                     <div class="kpi-value">
                       {{ formatItems(data?.metrics?.basketItemCountMean) }}
                     </div>
-                    <div class="kpi-title">Average Basket Size</div>
+                    <div class="kpi-title">
+                      Durchschnittliche Warenkorbgröße
+                    </div>
                   </div>
 
                   <div class="kpi-card">
@@ -54,14 +82,18 @@
                       <div class="kpi-icon green">
                         <v-icon>mdi-cash-multiple</v-icon>
                       </div>
-                      <div class="kpi-change positive">+15.3%</div>
+                      <div class="kpi-change positive">
+                        +15.3%
+                      </div>
                     </div>
                     <div class="kpi-value">
                       {{
                         formatCurrency(data?.consumerMetrics?.customerLifetimeValue || 0)
                       }}
                     </div>
-                    <div class="kpi-title">Customer Lifetime Value</div>
+                    <div class="kpi-title">
+                      Kunden Gesamteinkaufswert
+                    </div>
                   </div>
 
                   <div class="kpi-card">
@@ -69,12 +101,16 @@
                       <div class="kpi-icon orange">
                         <v-icon>mdi-clock-outline</v-icon>
                       </div>
-                      <div class="kpi-change negative">-5.7%</div>
+                      <div class="kpi-change negative">
+                        -5.7%
+                      </div>
                     </div>
                     <div class="kpi-value">
                       {{ formatDays(data?.consumerMetrics?.recencyAggregation || 0) }}
                     </div>
-                    <div class="kpi-title">Average Recency</div>
+                    <div class="kpi-title">
+                      Durchschnittliche Aktualität
+                    </div>
                   </div>
 
                   <div class="kpi-card">
@@ -82,14 +118,18 @@
                       <div class="kpi-icon cyan">
                         <v-icon>mdi-repeat</v-icon>
                       </div>
-                      <div class="kpi-change positive">+3.2%</div>
+                      <div class="kpi-change positive">
+                        +3.2%
+                      </div>
                     </div>
                     <div class="kpi-value">
                       {{
                         formatFrequency(data?.consumerMetrics?.frequencyAggregation || 0)
                       }}
                     </div>
-                    <div class="kpi-title">Purchase Frequency</div>
+                    <div class="kpi-title">
+                      Kaufhäufigkeit
+                    </div>
                   </div>
                 </div>
               </DataSegment>
@@ -98,8 +138,14 @@
 
           <!-- Charts and Lists Row -->
           <v-row>
-            <v-col cols="12" lg="12">
-              <StoreCard title="TOP STORES:" :items="data.topStores" />
+            <v-col
+              cols="12"
+              lg="12"
+            >
+              <StoreCard
+                title="TOP FILIALEN:"
+                :items="data.topStores"
+              />
               <!-- <DataSegment>
                 <template #title>
                   TOP 5 PRODUCTS FAMILY NON-ALCOHOLIC BEVERAGES
@@ -111,18 +157,31 @@
                 <ClassShareChart />
               </DataSegment> -->
             </v-col>
-            <v-col cols="12" lg="12">
+            <v-col
+              cols="12"
+              lg="12"
+            >
               <v-row>
-                <v-col cols="6" lg="6">
+                <v-col
+                  cols="6"
+                  lg="6"
+                >
                   <ItemsList
-                    title="TOP ITEMS:"
+                    title="TOP PRODUKTE:"
                     :items="data.topItems"
                     color="warning"
                     class="mb-6"
                   />
                 </v-col>
-                <v-col cols="6" lg="6">
-                  <ItemsList title="FLOP ITEMS:" :items="data.flopItems" color="error" />
+                <v-col
+                  cols="6"
+                  lg="6"
+                >
+                  <ItemsList
+                    title="FLOP PRODUKTE:"
+                    :items="data.flopItems"
+                    color="error"
+                  />
                 </v-col>
               </v-row>
             </v-col>
@@ -152,17 +211,17 @@ function formatCurrency(value?: number): string {
 
 function formatItems(value?: number): string {
   const num = parseFloat(value?.toString() || "0") || 0;
-  return `${num.toFixed(1)} items`;
+  return `${num.toFixed(1)} Artikel`;
 }
 
 function formatDays(value?: number): string {
   const num = parseFloat(value?.toString() || "0") || 0;
-  return `${num.toFixed(1)} days`;
+  return `${num.toFixed(1)} Tage`;
 }
 
 function formatFrequency(value?: number): string {
   const num = parseFloat(value?.toString() || "0") || 0;
-  return `${num.toFixed(2)} per month`;
+  return `${num.toFixed(2)} pro Monat`;
 }
 
 // Event handlers

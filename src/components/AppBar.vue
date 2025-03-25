@@ -5,7 +5,9 @@
       style="max-width: 1440px; margin: 0 auto"
     >
       <div class="input-group">
-        <div class="text-caption text-grey-darken-1 mb-1">Timeframe</div>
+        <div class="text-caption text-grey-darken-1 mb-1">
+          Zeitraum
+        </div>
         <v-text-field
           v-model="selectedTimeframe"
           variant="outlined"
@@ -16,7 +18,10 @@
           @click="showDatePicker = true"
         />
 
-        <v-dialog v-model="showDatePicker" max-width="300">
+        <v-dialog
+          v-model="showDatePicker"
+          max-width="300"
+        >
           <v-date-picker
             v-model="dateRange"
             range
@@ -27,8 +32,13 @@
       </div>
 
       <!-- Category Selector - Only visible on CategoryView -->
-      <div v-if="isCategoryView" class="input-group ms-8">
-        <div class="text-caption text-grey-darken-1 mb-1">Category</div>
+      <div
+        v-if="isCategoryView"
+        class="input-group ms-8"
+      >
+        <div class="text-caption text-grey-darken-1 mb-1">
+          Kategorie
+        </div>
         <v-select
           v-model="selectedCategory"
           :items="availableCategories"
@@ -40,14 +50,27 @@
         />
       </div>
 
-      <v-btn color="black" variant="flat" class="compare-btn ms-8">
-        <v-icon size="18" class="mr-2"> mdi-compare </v-icon>
-        Compare
+      <v-btn
+        color="black"
+        variant="flat"
+        class="compare-btn ms-8"
+      >
+        <v-icon
+          size="18"
+          class="mr-2"
+        >
+          mdi-compare
+        </v-icon>
+        Vergleichen
       </v-btn>
 
       <v-spacer />
 
-      <v-btn icon variant="text" class="notification-btn">
+      <v-btn
+        icon
+        variant="text"
+        class="notification-btn"
+      >
         <v-icon>mdi-bell-outline</v-icon>
       </v-btn>
     </div>
