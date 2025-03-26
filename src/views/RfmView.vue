@@ -4,34 +4,16 @@
 
     <!-- Dashboard Content -->
     <div class="content-wrapper">
-      <v-container
-        class="pa-8"
-        style="max-width: 1440px"
-      >
-        <v-row
-          v-if="isLoading"
-          class="mb-8"
-        >
-          <v-col
-            cols="12"
-            class="d-flex justify-center"
-          >
-            <v-progress-circular
-              indeterminate
-              color="primary"
-            />
+      <v-container class="pa-8" style="max-width: 1440px">
+        <v-row v-if="isLoading" class="mb-8">
+          <v-col cols="12" class="d-flex justify-center">
+            <v-progress-circular indeterminate color="primary" />
           </v-col>
         </v-row>
 
-        <v-row
-          v-else-if="error"
-          class="mb-8"
-        >
+        <v-row v-else-if="error" class="mb-8">
           <v-col cols="12">
-            <v-alert
-              type="error"
-              :text="error"
-            />
+            <v-alert type="error" :text="error" />
           </v-col>
         </v-row>
 
@@ -39,9 +21,7 @@
           <!-- Page Title -->
           <v-row class="mb-5">
             <v-col cols="12">
-              <h1 class="text-h4 font-weight-bold mb-2">
-                RFM-Analyse
-              </h1>
+              <h1 class="text-h4 font-weight-bold mb-2">RFM-Analyse</h1>
               <p class="text-subtitle-1 text-medium-emphasis">
                 Kundenerkenntnisse basierend auf Aktualität, Häufigkeit und monetärem Wert
               </p>
@@ -51,65 +31,32 @@
           <!-- Customer Segments -->
           <v-row class="mb-8">
             <v-col cols="12">
-              <v-card
-                elevation="2"
-                class="chart-card"
-              >
+              <v-card elevation="2" class="chart-card">
                 <v-card-title class="d-flex align-center">
-                  <v-icon
-                    icon="mdi-account-group"
-                    class="mr-2"
-                    color="warning"
-                  />
+                  <v-icon icon="mdi-account-group" class="mr-2" color="warning" />
                   Kundensegmente
                 </v-card-title>
                 <v-card-text>
                   <v-row>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="3"
-                    >
+                    <v-col cols="12" sm="6" md="3">
                       <div class="text-center">
-                        <v-icon
-                          icon="mdi-star"
-                          color="warning"
-                          size="32"
-                          class="mb-2"
-                        />
-                        <div class="text-h6 mb-1">
-                          VIP-Kunden
-                        </div>
+                        <v-icon icon="mdi-star" color="warning" size="32" class="mb-2" />
+                        <div class="text-h6 mb-1">VIP-Kunden</div>
                         <div class="text-caption text-medium-emphasis">
                           Hoher Kunden Gesamteinkaufswert & Häufigkeit
                         </div>
                       </div>
                     </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="3"
-                    >
+                    <v-col cols="12" sm="6" md="3">
                       <div class="text-center">
-                        <v-icon
-                          icon="mdi-alert"
-                          color="error"
-                          size="32"
-                          class="mb-2"
-                        />
-                        <div class="text-h6 mb-1">
-                          Risikokunden
-                        </div>
+                        <v-icon icon="mdi-alert" color="error" size="32" class="mb-2" />
+                        <div class="text-h6 mb-1">Risikokunden</div>
                         <div class="text-caption text-medium-emphasis">
                           Lange Aktualität
                         </div>
                       </div>
                     </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="3"
-                    >
+                    <v-col cols="12" sm="6" md="3">
                       <div class="text-center">
                         <v-icon
                           icon="mdi-trending-up"
@@ -117,19 +64,13 @@
                           size="32"
                           class="mb-2"
                         />
-                        <div class="text-h6 mb-1">
-                          Wachstumspotenzial
-                        </div>
+                        <div class="text-h6 mb-1">Wachstumspotenzial</div>
                         <div class="text-caption text-medium-emphasis">
                           Hohe Häufigkeit, Niedriger Warenkorb
                         </div>
                       </div>
                     </v-col>
-                    <v-col
-                      cols="12"
-                      sm="6"
-                      md="3"
-                    >
+                    <v-col cols="12" sm="6" md="3">
                       <div class="text-center">
                         <v-icon
                           icon="mdi-cash-multiple"
@@ -137,9 +78,7 @@
                           size="32"
                           class="mb-2"
                         />
-                        <div class="text-h6 mb-1">
-                          Großkäufer
-                        </div>
+                        <div class="text-h6 mb-1">Großkäufer</div>
                         <div class="text-caption text-medium-emphasis">
                           Hoher Wert, Niedrige Häufigkeit
                         </div>
@@ -153,11 +92,7 @@
 
           <!-- RFM Metrics Row -->
           <v-row class="mb-8 metrics-row">
-            <v-col
-              cols="12"
-              sm="6"
-              lg="3"
-            >
+            <v-col cols="12" sm="6" lg="3">
               <MetricCard
                 title="Aktualität"
                 subtitle="Durchschnittliche Tage seit dem letzten Kauf"
@@ -169,11 +104,7 @@
                 "
               />
             </v-col>
-            <v-col
-              cols="12"
-              sm="6"
-              lg="3"
-            >
+            <v-col cols="12" sm="6" lg="3">
               <MetricCard
                 title="Häufigkeit"
                 subtitle="Durchschnittliche Besuche pro Monat"
@@ -188,11 +119,7 @@
                 "
               />
             </v-col>
-            <v-col
-              cols="12"
-              sm="6"
-              lg="3"
-            >
+            <v-col cols="12" sm="6" lg="3">
               <MetricCard
                 title="Monetär"
                 subtitle="Durchschnittlicher Kaufwert"
@@ -207,11 +134,7 @@
                 "
               />
             </v-col>
-            <v-col
-              cols="12"
-              sm="6"
-              lg="3"
-            >
+            <v-col cols="12" sm="6" lg="3">
               <MetricCard
                 title="Kunden Gesamteinkaufswert"
                 subtitle="Gesamtwert pro Kunde"
@@ -227,11 +150,7 @@
 
           <!-- Charts Row -->
           <v-row class="mb-8">
-            <v-col
-              cols="12"
-              sm="6"
-              lg="3"
-            >
+            <v-col cols="12" sm="6" lg="3">
               <MetricCard
                 title="Durchschnittliche Warenkorbgröße"
                 subtitle="Durchschnittliche Anzahl Artikel pro Einkauf"
@@ -246,11 +165,7 @@
                 "
               />
             </v-col>
-            <v-col
-              cols="12"
-              sm="6"
-              lg="3"
-            >
+            <v-col cols="12" sm="6" lg="3">
               <MetricCard
                 title="Median Warenkorbgröße"
                 subtitle="Der mittlere Wert der Artikel pro Kauf"
@@ -333,6 +248,7 @@ function getTrendIndicator(
 .rfm-view {
   min-height: 100vh;
   background-color: #f8fafc;
+  padding: 0px 7em;
 }
 
 .content-wrapper {

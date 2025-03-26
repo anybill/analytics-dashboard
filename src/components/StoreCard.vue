@@ -21,7 +21,7 @@
                   height: 50px;
                   border-radius: 50%;
                   background-color: #f0f0f0;
-                  margin-right: 8px;
+                  margin-right: 20px;
                 "
               >
                 <v-icon icon="mdi-store" size="28" />

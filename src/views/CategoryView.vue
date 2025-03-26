@@ -22,64 +22,79 @@
 
         <template v-else-if="data">
           <!-- Charts and Lists Row -->
-          <v-row>
-            <v-col cols="12" lg="12">
-              <DataSegment>
-                <template #title>
-                  TOP PRODUKTE NACH KATEGORIE {{ selectedCategory.toUpperCase() }}
-                </template>
-                <TopProductsPieChart :items="topCategoryData" type="product" />
-              </DataSegment>
-            </v-col>
-            <v-col cols="12" lg="12">
-              <v-row>
-                <v-col cols="6" lg="6">
-                  <ItemsList
-                    title="TOP PRODUKTE:"
-                    :items="getTopCategoryData()"
-                    color="warning"
-                    class="mb-6"
-                  />
-                </v-col>
-                <v-col cols="6" lg="6">
-                  <ItemsList
-                    title="FLOP PRODUKTE:"
-                    :items="getFlopCategoryData()"
-                    color="error"
-                  />
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" lg="12">
-              <DataSegment>
-                <template #title>
-                  TOP MARKEN NACH KATEGORIE {{ selectedCategory.toUpperCase() }}
-                </template>
-                <TopProductsPieChart :items="topBrandData" type="brand" />
-              </DataSegment>
-            </v-col>
-            <v-col cols="12" lg="12">
-              <v-row>
-                <v-col cols="6" lg="6">
-                  <ItemsList
-                    title="TOP MARKEN:"
-                    :items="getTopBrandData()"
-                    color="warning"
-                    class="mb-6"
-                  />
-                </v-col>
-                <v-col cols="6" lg="6">
-                  <ItemsList
-                    title="FLOP MARKEN:"
-                    :items="getFlopBrandData()"
-                    color="error"
-                  />
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
+          <DataSegment>
+            <v-row>
+              <v-col cols="6" lg="6">
+                <DataSegment style="height: 100%">
+                  <template #title>
+                    <div class="mb-16">
+                      TOP PRODUKTE NACH KATEGORIE {{ selectedCategory.toUpperCase() }}
+                    </div>
+                  </template>
+                  <TopProductsPieChart :items="topCategoryData" type="product" />
+                </DataSegment>
+              </v-col>
+              <v-col cols="6" lg="6">
+                <v-row>
+                  <v-col cols="6" lg="6">
+                    <ItemsList
+                      title="TOP PRODUKTE:"
+                      :items="getTopCategoryData()"
+                      color="warning"
+                      class="mb-6"
+                    />
+                  </v-col>
+                  <v-col cols="6" lg="6">
+                    <ItemsList
+                      title="FLOP PRODUKTE:"
+                      :items="getFlopCategoryData()"
+                      color="error"
+                    />
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </DataSegment>
+          <DataSegment>
+            <v-row>
+              <v-col cols="6" lg="6">
+                <DataSegment
+                  style="
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                  "
+                >
+                  <template #title>
+                    <div class="mb-16">
+                      TOP MARKEN NACH KATEGORIE {{ selectedCategory.toUpperCase() }}
+                    </div>
+                  </template>
+                  <TopProductsPieChart :items="topBrandData" type="brand" />
+                </DataSegment>
+              </v-col>
+              <v-col cols="6" lg="6">
+                <v-row>
+                  <v-col cols="6" lg="6">
+                    <ItemsList
+                      title="TOP MARKEN:"
+                      :items="getTopBrandData()"
+                      color="warning"
+                      class="mb-6"
+                    />
+                  </v-col>
+                  <v-col cols="6" lg="6">
+                    <ItemsList
+                      title="FLOP MARKEN:"
+                      :items="getFlopBrandData()"
+                      color="error"
+                    />
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </DataSegment>
         </template>
       </v-container>
     </div>
@@ -184,6 +199,7 @@ onMounted(async () => {
 .analytics-view {
   min-height: 100vh;
   background-color: #f8fafc;
+  padding: 0px 7em;
 }
 
 .content-wrapper {

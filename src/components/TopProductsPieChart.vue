@@ -1,9 +1,7 @@
 <template>
-  <DataSegment>
-    <div style="height: 300px">
-      <Pie :data="chartData" :options="chartOptions" />
-    </div>
-  </DataSegment>
+  <div style="height: 500px; width: 100%">
+    <Pie :data="chartData" :options="chartOptions" />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -13,6 +11,7 @@ import type { ChartData } from "chart.js";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import DataSegment from "./DataSegment.vue";
 import type { CategoryProduct, CategoryBrand } from "@/types/analytics";
+import { trackRoute } from "unplugin-vue-router/runtime";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -82,14 +81,20 @@ const chartData = computed<ChartData<"pie">>(() => {
 const chartOptions = computed<ChartOptions<"pie">>(() => ({
   responsive: true,
   maintainAspectRatio: false,
+  layout: {
+    autoPadding: true,
+    padding: 20,
+  },
   plugins: {
     legend: {
-      position: "right" as const,
+      position: "bottom" as const,
+      maxHeight: 150,
       labels: {
-        boxWidth: 15,
-        padding: 15,
+        boxWidth: 30,
+        padding: 20,
+        offset: 200,
         font: {
-          size: 12,
+          size: 15,
         },
       },
     },
