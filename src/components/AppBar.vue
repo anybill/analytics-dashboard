@@ -5,72 +5,80 @@
       style="max-width: 1440px; margin: 0 auto"
     >
       <!-- Month Selector -->
-      <div class="month-selector d-flex align-center">
-        <v-btn
-          icon
-          variant="text"
-          :disabled="!canGoToPreviousMonth"
-          @click="selectPreviousMonth"
-        >
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
+      <div class="month-selector">
+        <div class="month-controls d-flex align-center">
+          <v-btn
+            icon
+            variant="text"
+            :disabled="!canGoToPreviousMonth"
+            class="month-nav-btn"
+            @click="selectPreviousMonth"
+          >
+            <v-icon>mdi-chevron-left</v-icon>
+          </v-btn>
 
-        <div class="month-picker">
-          <div class="text-caption text-grey-darken-1 mb-1">Monat</div>
-          <v-menu v-model="monthMenu" :close-on-content-click="false" location="bottom">
-            <template #activator="{ props }">
-              <v-btn
-                variant="outlined"
-                v-bind="props"
-                class="month-display-btn"
-                :min-width="200"
-              >
-                {{ formatSelectedMonth }}
-                <v-icon class="ms-2"> mdi-calendar </v-icon>
-              </v-btn>
-            </template>
+          <div class="month-picker flex-grow-1">
+            <v-menu v-model="monthMenu" :close-on-content-click="false" location="bottom">
+              <template #activator="{ props }">
+                <v-btn
+                  variant="outlined"
+                  v-bind="props"
+                  class="month-display-btn"
+                  :min-width="200"
+                >
+                  {{ formatSelectedMonth }}
+                  <v-icon class="ms-2"> mdi-calendar </v-icon>
+                </v-btn>
+              </template>
 
-            <v-card min-width="300" class="month-selection-card">
-              <v-card-text>
-                <div class="d-flex justify-space-between align-center mb-4">
-                  <v-btn icon @click="changeYear(-1)">
-                    <v-icon>mdi-chevron-left</v-icon>
-                  </v-btn>
-                  <div class="text-h6">
-                    {{ currentYear }}
+              <v-card min-width="300" class="month-selection-card">
+                <v-card-text>
+                  <div class="d-flex justify-space-between align-center mb-4">
+                    <v-btn icon @click="changeYear(-1)">
+                      <v-icon>mdi-chevron-left</v-icon>
+                    </v-btn>
+                    <div class="text-h6">
+                      {{ currentYear }}
+                    </div>
+                    <v-btn icon @click="changeYear(1)">
+                      <v-icon>mdi-chevron-right</v-icon>
+                    </v-btn>
                   </div>
-                  <v-btn icon @click="changeYear(1)">
-                    <v-icon>mdi-chevron-right</v-icon>
-                  </v-btn>
-                </div>
-                <div class="month-grid">
-                  <v-btn
-                    v-for="(month, index) in monthsInYear"
-                    :key="index"
-                    variant="text"
-                    :color="isMonthSelected(index) ? 'primary' : undefined"
-                    :disabled="!isMonthAvailable(index)"
-                    @click="selectMonth(index)"
-                  >
-                    {{ month }}
-                  </v-btn>
-                </div>
-              </v-card-text>
-            </v-card>
-          </v-menu>
-        </div>
+                  <div class="month-grid">
+                    <v-btn
+                      v-for="(month, index) in monthsInYear"
+                      :key="index"
+                      variant="text"
+                      :color="isMonthSelected(index) ? 'primary' : undefined"
+                      :disabled="!isMonthAvailable(index)"
+                      @click="selectMonth(index)"
+                    >
+                      {{ month }}
+                    </v-btn>
+                  </div>
+                </v-card-text>
+              </v-card>
+            </v-menu>
+          </div>
 
-        <v-btn icon variant="text" :disabled="!canGoToNextMonth" @click="selectNextMonth">
-          <v-icon>mdi-chevron-right</v-icon>
-        </v-btn>
+          <v-btn
+            icon
+            variant="text"
+            :disabled="!canGoToNextMonth"
+            class="month-nav-btn"
+            @click="selectNextMonth"
+          >
+            <v-icon>mdi-chevron-right</v-icon>
+          </v-btn>
+        </div>
       </div>
 
       <!-- Category Selector - Only visible on CategoryView -->
       <div v-if="isCategoryView" class="input-group ms-8">
-        <div class="text-caption text-grey-darken-1 mb-1">Kategorie</div>
         <v-select
           v-model="selectedCategory"
           :items="availableCategories"
+          label="Kategorie"
           variant="outlined"
           density="compact"
           hide-details
@@ -352,14 +360,20 @@ onMounted(async () => {
 
 .month-selector {
   min-width: 300px;
-  gap: 8px;
 }
 
-.month-picker {
-  flex: 1;
+.month-controls {
+  gap: 8px;
+  height: 36px;
+}
+
+.month-nav-btn {
+  height: 36px;
+  width: 36px;
 }
 
 .month-display-btn {
+  height: 36px;
   width: 100%;
   justify-content: space-between;
   text-transform: none;
