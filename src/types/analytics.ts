@@ -5,6 +5,8 @@ export interface BasketMetrics {
     monetaryMedian: number;
     basketItemCountMean: number;
     basketItemCountMedian: number;
+    year: number;
+    month: number;
 }
 
 export interface Store {
@@ -20,6 +22,8 @@ export interface Store {
     number: string;
     latitude: number;
     longitude: number;
+    year: number;
+    month: number;
 }
 
 export interface CategoryProduct {
@@ -27,6 +31,8 @@ export interface CategoryProduct {
     product: string;
     productCount: number;
     categoryShare: number;
+    year: number;
+    month: number;
 }
 
 export interface CategoryBrand {
@@ -34,6 +40,8 @@ export interface CategoryBrand {
     brand: string;
     productCount: number;
     categoryShare: number;
+    year: number;
+    month: number;
 }
 
 // Analytics API Response Types
@@ -99,11 +107,15 @@ export interface MetricData {
     monetaryMedian: number;
     basketItemCountMean: number;
     basketItemCountMedian: number;
+    year: number;
+    month: number;
 }
 
 export interface Product {
     mappedProduct: string;
     productCount: number;
+    year: number;
+    month: number;
 }
 
 export interface Store {
@@ -116,6 +128,8 @@ export interface Store {
     number: string;
     latitude: number;
     longitude: number;
+    year: number;
+    month: number;
 }
 
 export interface ConsumerMetrics {
@@ -125,4 +139,6 @@ export interface ConsumerMetrics {
     frequencyAggregation: number;
     recencyAggregation: number;
     customerLifetimeValue: number;
+    year: number;
+    month: number;
 }
