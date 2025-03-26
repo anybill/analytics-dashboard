@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Product } from "@/composables/useAnalytics";
+import type { Product } from "@/types/analytics";
 import DataSegment from "./DataSegment.vue";
 
 interface Props {

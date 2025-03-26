@@ -3,15 +3,15 @@ import ApiConfig from "@/config/ApiConfig";
 import type { AnalyticsData, CategoryBrand, CategoryProduct, ConsumerMetrics, MetricData, Product, QueryDto, Store } from "@/types/analytics";
 
 
-function normalizeKeys<T>(data: any): T {
+function normalizeKeys<T>(data: unknown): T {
     if (Array.isArray(data)) {
         return data.map((item) => normalizeKeys(item)) as T;
     } else if (typeof data === "object" && data !== null) {
-        return Object.keys(data).reduce((acc, key) => {
+        return Object.keys(data as Record<string, unknown>).reduce<Record<string, unknown>>((acc, key) => {
             const normalizedKey = key.charAt(0).toLowerCase() + key.slice(1);
-            acc[normalizedKey] = normalizeKeys(data[key]);
+            acc[normalizedKey] = normalizeKeys((data as Record<string, unknown>)[key]);
             return acc;
-        }, {} as any);
+        }, {}) as T;
     }
     return data as T;
 }

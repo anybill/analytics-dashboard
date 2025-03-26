@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { Bar } from "vue-chartjs";
-import type { ChartOptions } from "chart.js";
+import type { ChartOptions, TooltipItem } from "chart.js";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -91,7 +91,7 @@ const chartOptions = ref<ChartOptions<"bar">>({
         display: false,
       },
       ticks: {
-        callback: function (value) {
+        callback: function (value: number) {
           return value + "%";
         },
         color: "#666666",
@@ -124,8 +124,8 @@ const chartOptions = ref<ChartOptions<"bar">>({
       boxPadding: 4,
       usePointStyle: true,
       callbacks: {
-        label: function (context) {
-          const value = context.raw as number;
+        label: function (context: TooltipItem<"bar">) {
+          const value = context?.raw as number;
           return ` ${value}%`;
         },
       },

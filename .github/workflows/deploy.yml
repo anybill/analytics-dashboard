@@ -45,9 +45,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            VITE_ANYBILL_USERNAME=${{ secrets.ANYBILL_USERNAME }}
-            VITE_ANYBILL_PASSWORD=${{ secrets.ANYBILL_PASSWORD }}
-            VITE_ANYBILL_VCID=${{ secrets.ANYBILL_VCID }}
+            VITE_ANYBILL_USERNAME=${{ secrets.VITE_ANYBILL_USERNAME }}
+            VITE_ANYBILL_PASSWORD=${{ secrets.VITE_ANYBILL_PASSWORD }}
+            VITE_ANYBILL_VCID=${{ secrets.VITE_ANYBILL_VCID }}
 
   deploy:
     needs: build-and-push

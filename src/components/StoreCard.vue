@@ -52,9 +52,9 @@
 </template>
 
 <script setup lang="ts">
-import type { Store } from "@/composables/useAnalytics";
 import "leaflet/dist/leaflet.css";
 import DataSegment from "./DataSegment.vue";
+import type { Store } from "@/types/analytics";
 
 interface Props {
   title: string;

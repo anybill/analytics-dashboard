@@ -9,20 +9,16 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppBar: typeof import('./components/AppBar.vue')['default']
     AppFooter: typeof import('./components/AppFooter.vue')['default']
-    BasketDistributionChart: typeof import('./components/charts/BasketDistributionChart.vue')['default']
     ChartSegment: typeof import('./components/ChartSegment.vue')['default']
     ClassShareChart: typeof import('./components/ClassShareChart.vue')['default']
     DataSegment: typeof import('./components/DataSegment.vue')['default']
-    HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     ItemsList: typeof import('./components/ItemsList.vue')['default']
-    LineChart: typeof import('./components/LineChart.vue')['default']
     Map: typeof import('./components/Map.vue')['default']
     MetricCard: typeof import('./components/MetricCard.vue')['default']
     NavigationBar: typeof import('./components/NavigationBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StoreCard: typeof import('./components/StoreCard.vue')['default']
-    StoresTable: typeof import('./components/StoresTable.vue')['default']
     TopProductsPieChart: typeof import('./components/TopProductsPieChart.vue')['default']
   }
 }
