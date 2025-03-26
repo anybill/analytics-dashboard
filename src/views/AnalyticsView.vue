@@ -187,7 +187,7 @@ function formatFrequency(value?: number): string {
 watch(
   () => appBarStore.selectedMonth,
   () => {
-    handleMonthChange(appBarStore.selectedMonth.month);
+    handleMonthChange(appBarStore.selectedMonth);
   }
 );
 

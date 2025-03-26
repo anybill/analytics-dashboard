@@ -5,19 +5,64 @@
       style="max-width: 1440px; margin: 0 auto"
     >
       <!-- Month Selector -->
-      <div class="input-group">
-        <div class="text-caption text-grey-darken-1 mb-1">Monat</div>
-        <v-select
-          v-model="selectedMonth"
-          :items="availableMonths"
-          variant="outlined"
-          density="compact"
-          hide-details
-          bg-color="white"
-          item-title="label"
-          item-value="value"
-          @update:model-value="handleMonthChange"
-        />
+      <div class="month-selector d-flex align-center">
+        <v-btn
+          icon
+          variant="text"
+          :disabled="!canGoToPreviousMonth"
+          @click="selectPreviousMonth"
+        >
+          <v-icon>mdi-chevron-left</v-icon>
+        </v-btn>
+
+        <div class="month-picker">
+          <div class="text-caption text-grey-darken-1 mb-1">Monat</div>
+          <v-menu v-model="monthMenu" :close-on-content-click="false" location="bottom">
+            <template #activator="{ props }">
+              <v-btn
+                variant="outlined"
+                v-bind="props"
+                class="month-display-btn"
+                :min-width="200"
+              >
+                {{ formatSelectedMonth }}
+                <v-icon class="ms-2"> mdi-calendar </v-icon>
+              </v-btn>
+            </template>
+
+            <v-card min-width="300" class="month-selection-card">
+              <v-card-text>
+                <div class="d-flex justify-space-between align-center mb-4">
+                  <v-btn icon @click="changeYear(-1)">
+                    <v-icon>mdi-chevron-left</v-icon>
+                  </v-btn>
+                  <div class="text-h6">
+                    {{ currentYear }}
+                  </div>
+                  <v-btn icon @click="changeYear(1)">
+                    <v-icon>mdi-chevron-right</v-icon>
+                  </v-btn>
+                </div>
+                <div class="month-grid">
+                  <v-btn
+                    v-for="(month, index) in monthsInYear"
+                    :key="index"
+                    variant="text"
+                    :color="isMonthSelected(index) ? 'primary' : undefined"
+                    :disabled="!isMonthAvailable(index)"
+                    @click="selectMonth(index)"
+                  >
+                    {{ month }}
+                  </v-btn>
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-menu>
+        </div>
+
+        <v-btn icon variant="text" :disabled="!canGoToNextMonth" @click="selectNextMonth">
+          <v-icon>mdi-chevron-right</v-icon>
+        </v-btn>
       </div>
 
       <!-- Category Selector - Only visible on CategoryView -->
@@ -62,6 +107,122 @@ const selectedMonth = ref<{ year: number; month: number } | null>(null);
 const selectedCategory = ref<string | null>(null);
 
 const isCategoryView = computed(() => route.path === "/category");
+
+const monthMenu = ref(false);
+const currentYear = ref(new Date().getFullYear());
+
+const monthsInYear = [
+  "Jan",
+  "Feb",
+  "März",
+  "Apr",
+  "Mai",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Okt",
+  "Nov",
+  "Dez",
+];
+
+// Format the selected month for display
+const formatSelectedMonth = computed(() => {
+  if (!selectedMonth.value) return "Monat auswählen";
+  return new Date(
+    selectedMonth.value.year,
+    selectedMonth.value.month - 1
+  ).toLocaleString("de-DE", { month: "long", year: "numeric" });
+});
+
+// Create a sorted array of available dates for navigation
+const availableDates = computed(() => {
+  if (!analyticsData.value?.topItems) return [];
+
+  return analyticsData.value.topItems
+    .map((item) => ({
+      year: item.year,
+      month: item.month,
+      timestamp: new Date(item.year, item.month - 1).getTime(),
+    }))
+    .sort((a, b) => a.timestamp - b.timestamp);
+});
+
+// Navigation controls
+const canGoToPreviousMonth = computed(() => {
+  if (!selectedMonth.value || availableDates.value.length === 0) return false;
+  const currentTimestamp = new Date(
+    selectedMonth.value.year,
+    selectedMonth.value.month - 1
+  ).getTime();
+  return availableDates.value[0].timestamp < currentTimestamp;
+});
+
+const canGoToNextMonth = computed(() => {
+  if (!selectedMonth.value || availableDates.value.length === 0) return false;
+  const currentTimestamp = new Date(
+    selectedMonth.value.year,
+    selectedMonth.value.month - 1
+  ).getTime();
+  return (
+    availableDates.value[availableDates.value.length - 1].timestamp > currentTimestamp
+  );
+});
+
+// Helper functions
+function isMonthAvailable(monthIndex: number) {
+  return availableDates.value.some(
+    (date) => date.year === currentYear.value && date.month === monthIndex + 1
+  );
+}
+
+function isMonthSelected(monthIndex: number) {
+  return (
+    selectedMonth.value?.year === currentYear.value &&
+    selectedMonth.value?.month === monthIndex + 1
+  );
+}
+
+// Actions
+function selectMonth(monthIndex: number) {
+  if (!isMonthAvailable(monthIndex)) return;
+
+  handleMonthChange({
+    year: currentYear.value,
+    month: monthIndex + 1,
+  });
+  monthMenu.value = false;
+}
+
+function changeYear(delta: number) {
+  currentYear.value += delta;
+}
+
+function selectPreviousMonth() {
+  if (!selectedMonth.value || !canGoToPreviousMonth.value) return;
+
+  const currentDate = new Date(selectedMonth.value.year, selectedMonth.value.month - 1);
+  const previousDate = new Date(currentDate.getTime());
+  previousDate.setMonth(previousDate.getMonth() - 1);
+
+  handleMonthChange({
+    year: previousDate.getFullYear(),
+    month: previousDate.getMonth() + 1,
+  });
+}
+
+function selectNextMonth() {
+  if (!selectedMonth.value || !canGoToNextMonth.value) return;
+
+  const currentDate = new Date(selectedMonth.value.year, selectedMonth.value.month - 1);
+  const nextDate = new Date(currentDate.getTime());
+  nextDate.setMonth(nextDate.getMonth() + 1);
+
+  handleMonthChange({
+    year: nextDate.getFullYear(),
+    month: nextDate.getMonth() + 1,
+  });
+}
 
 // Compute available months from analytics data
 const availableMonths = computed(() => {
@@ -187,5 +348,35 @@ onMounted(async () => {
   color: #64748b;
   height: 36px;
   margin-bottom: 1px;
+}
+
+.month-selector {
+  min-width: 300px;
+  gap: 8px;
+}
+
+.month-picker {
+  flex: 1;
+}
+
+.month-display-btn {
+  width: 100%;
+  justify-content: space-between;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.month-selection-card {
+  padding: 8px;
+}
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+:deep(.v-btn--disabled) {
+  opacity: 0.3;
 }
 </style>
