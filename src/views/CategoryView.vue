@@ -1,9 +1,6 @@
 <template>
   <div class="analytics-view">
-    <AppBar
-      @timeframe-change="handleTimeframeChange"
-      @category-change="handleCategoryChange"
-    />
+    <AppBar />
 
     <!-- Dashboard Content -->
     <div class="content-wrapper">
@@ -108,20 +105,31 @@ import AppBar from "@/components/AppBar.vue";
 import DataSegment from "@/components/DataSegment.vue";
 import { useAnalytics } from "@/composables/useAnalytics";
 import type { AnalyticsData, CategoryBrand, CategoryProduct } from "@/types/analytics";
+import { filterDataByMonth } from "@/utils/filterMethod";
+import { useAppBarStore } from "@/stores/appBarStore";
 
 const { isLoading, error, fetchAnalytics } = useAnalytics();
 const data = ref<AnalyticsData | null>(null);
-
+const appBarStore = useAppBarStore();
 const selectedCategory = ref<string | null>(null);
 
-// Event handlers
-async function handleTimeframeChange(timeframe: string) {
-  data.value = await fetchAnalytics(timeframe);
+const rawData = ref<AnalyticsData | null>(null);
+
+function handleMonthChange(month: number) {
+  if (rawData.value) {
+    const filteredData = filterDataByMonth(rawData.value, month);
+    data.value = filteredData;
+  }
 }
 
 function handleCategoryChange(category: string) {
   selectedCategory.value = category;
 }
+
+onMounted(async () => {
+  rawData.value = await fetchAnalytics();
+  handleMonthChange(appBarStore.selectedMonth);
+});
 
 const topCategoryData = computed(() => {
   if (!selectedCategory.value) return [];
@@ -148,7 +156,7 @@ function getTopCategoryData() {
       (item: CategoryProduct) => item.category === selectedCategory.value
     ) ?? []
   ).map((item: CategoryProduct) => ({
-    mappedProduct: item.product,
+    product: item.product,
     productCount: item.productCount,
   }));
 }
@@ -160,7 +168,7 @@ function getTopBrandData() {
       (item: CategoryProduct) => item.category === selectedCategory.value
     ) ?? []
   ).map((item: CategoryBrand) => ({
-    mappedProduct: item.brand,
+    product: item.brand,
     productCount: item.productCount,
   }));
 }
@@ -172,7 +180,7 @@ function getFlopBrandData() {
       (item: CategoryBrand) => item.category === selectedCategory.value
     ) ?? []
   ).map((item: CategoryBrand) => ({
-    mappedProduct: item.brand,
+    product: item.brand,
     productCount: item.productCount,
   }));
 }
@@ -184,14 +192,15 @@ function getFlopCategoryData() {
       (item: CategoryProduct) => item.category === selectedCategory.value
     ) ?? []
   ).map((item: CategoryProduct) => ({
-    mappedProduct: item.product,
+    product: item.product,
     productCount: item.productCount,
   }));
 }
 
-// Initial data fetch
-onMounted(async () => {
-  data.value = await fetchAnalytics();
+// Watch for changes if needed
+watch([() => appBarStore.selectedMonth, () => appBarStore.selectedCategory], () => {
+  handleMonthChange(appBarStore.selectedMonth);
+  handleCategoryChange(appBarStore.selectedCategory);
 });
 </script>
 

@@ -8,7 +8,7 @@
         <v-list-item-subtitle>
           <div class="d-flex justify-space-between align-center mb-2">
             <div class="text-subtitle-2 font-weight-medium text-grey-darken-1">
-              {{ item.mappedProduct }}
+              {{ item.product }}
             </div>
           </div>
           <v-progress-linear

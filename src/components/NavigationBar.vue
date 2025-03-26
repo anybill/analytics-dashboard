@@ -43,11 +43,6 @@ const navigationItems = [
     value: "category",
     path: "/category",
   },
-  {
-    icon: "mdi-account-outline",
-    value: "profile",
-    path: "/profile",
-  },
 ];
 </script>
 

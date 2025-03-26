@@ -1,6 +1,6 @@
 <template>
   <div class="rfm-view">
-    <AppBar @timeframe-change="handleTimeframeChange" />
+    <AppBar />
 
     <!-- Dashboard Content -->
     <div class="content-wrapper">
@@ -96,11 +96,11 @@
               <MetricCard
                 title="Aktualität"
                 subtitle="Durchschnittliche Tage seit dem letzten Kauf"
-                :value="formatDays(data.consumerMetrics.recencyAggregation)"
+                :value="formatDays(data.consumerMetrics[0].recencyAggregation)"
                 icon="mdi-clock-outline"
                 icon-color="info"
                 :trend="
-                  getTrendIndicator(data.consumerMetrics.recencyAggregation, 'recency')
+                  getTrendIndicator(data.consumerMetrics[0].recencyAggregation, 'recency')
                 "
               />
             </v-col>
@@ -108,12 +108,12 @@
               <MetricCard
                 title="Häufigkeit"
                 subtitle="Durchschnittliche Besuche pro Monat"
-                :value="formatFrequency(data.consumerMetrics.frequencyAggregation)"
+                :value="formatFrequency(data.consumerMetrics[0].frequencyAggregation)"
                 icon="mdi-repeat"
                 icon-color="success"
                 :trend="
                   getTrendIndicator(
-                    data.consumerMetrics.frequencyAggregation,
+                    data.consumerMetrics[0].frequencyAggregation,
                     'frequency'
                   )
                 "
@@ -123,12 +123,12 @@
               <MetricCard
                 title="Monetär"
                 subtitle="Durchschnittlicher Kaufwert"
-                :value="formatCurrency(data.consumerMetrics.monetaryAggregationMean)"
+                :value="formatCurrency(data.consumerMetrics[0].monetaryAggregationMean)"
                 icon="mdi-currency-eur"
                 icon-color="warning"
                 :trend="
                   getTrendIndicator(
-                    data.consumerMetrics.monetaryAggregationMean,
+                    data.consumerMetrics[0].monetaryAggregationMean,
                     'monetary'
                   )
                 "
@@ -138,11 +138,11 @@
               <MetricCard
                 title="Kunden Gesamteinkaufswert"
                 subtitle="Gesamtwert pro Kunde"
-                :value="formatCurrency(data.consumerMetrics.customerLifetimeValue)"
+                :value="formatCurrency(data.consumerMetrics[0].customerLifetimeValue)"
                 icon="mdi-account-cash"
                 icon-color="primary"
                 :trend="
-                  getTrendIndicator(data.consumerMetrics.customerLifetimeValue, 'clv')
+                  getTrendIndicator(data.consumerMetrics[0].customerLifetimeValue, 'clv')
                 "
               />
             </v-col>
@@ -154,12 +154,14 @@
               <MetricCard
                 title="Durchschnittliche Warenkorbgröße"
                 subtitle="Durchschnittliche Anzahl Artikel pro Einkauf"
-                :value="formatItems(data.consumerMetrics.basketItemCountAggregationMean)"
+                :value="
+                  formatItems(data.consumerMetrics[0].basketItemCountAggregationMean)
+                "
                 icon="mdi-basket"
                 icon-color="primary"
                 :trend="
                   getTrendIndicator(
-                    data.consumerMetrics.basketItemCountAggregationMean,
+                    data.consumerMetrics[0].basketItemCountAggregationMean,
                     'basket'
                   )
                 "
@@ -170,13 +172,13 @@
                 title="Median Warenkorbgröße"
                 subtitle="Der mittlere Wert der Artikel pro Kauf"
                 :value="
-                  formatItems(data.consumerMetrics.basketItemCountAggregationMedian)
+                  formatItems(data.consumerMetrics[0].basketItemCountAggregationMedian)
                 "
                 icon="mdi-basket-outline"
                 icon-color="primary"
                 :trend="
                   getTrendIndicator(
-                    data.consumerMetrics.basketItemCountAggregationMedian,
+                    data.consumerMetrics[0].basketItemCountAggregationMedian,
                     'basket'
                   )
                 "
@@ -193,19 +195,32 @@
 import AppBar from "@/components/AppBar.vue";
 import MetricCard from "@/components/MetricCard.vue";
 import { useAnalytics } from "@/composables/useAnalytics";
+import { useAppBarStore } from "@/stores/appBarStore";
 import type { AnalyticsData } from "@/types/analytics";
+import { filterDataByMonth } from "@/utils/filterMethod";
 
 const { isLoading, error, fetchAnalytics } = useAnalytics();
 const data = ref<AnalyticsData | null>(null);
+const rawData = ref<AnalyticsData | null>(null);
+const appBarStore = useAppBarStore();
 
-// Event handlers
-async function handleTimeframeChange(timeframe: string) {
-  data.value = await fetchAnalytics(timeframe);
+function handleMonthChange(month: number) {
+  if (rawData.value) {
+    const filteredData = filterDataByMonth(rawData.value, month);
+    data.value = filteredData;
+  }
 }
 
-// Initial data fetch
+watch(
+  () => appBarStore.selectedMonth,
+  () => {
+    handleMonthChange(appBarStore.selectedMonth);
+  }
+);
+
 onMounted(async () => {
-  data.value = await fetchAnalytics();
+  rawData.value = await fetchAnalytics();
+  handleMonthChange(appBarStore.selectedMonth);
 });
 
 function formatDays(value: number): string {

@@ -1,6 +1,6 @@
 <template>
   <div class="analytics-view">
-    <AppBar @timeframe-change="handleTimeframeChange" />
+    <AppBar />
 
     <!-- Dashboard Content -->
     <div class="content-wrapper">
@@ -31,7 +31,7 @@
                       <div class="kpi-change positive">+12.5%</div>
                     </div>
                     <div class="kpi-value">
-                      {{ formatCurrency(data?.metrics?.monetaryMean) }}
+                      {{ monetaryMean }}
                     </div>
                     <div class="kpi-title">Durchschnittlicher Bestellwert</div>
                   </div>
@@ -44,7 +44,7 @@
                       <div class="kpi-change positive">+8.2%</div>
                     </div>
                     <div class="kpi-value">
-                      {{ formatItems(data?.metrics?.basketItemCountMean) }}
+                      {{ basketItemCountMean }}
                     </div>
                     <div class="kpi-title">Durchschnittliche Warenkorbgröße</div>
                   </div>
@@ -57,9 +57,7 @@
                       <div class="kpi-change positive">+15.3%</div>
                     </div>
                     <div class="kpi-value">
-                      {{
-                        formatCurrency(data?.consumerMetrics?.customerLifetimeValue || 0)
-                      }}
+                      {{ customerLifetimeValue }}
                     </div>
                     <div class="kpi-title">Kunden Gesamteinkaufswert</div>
                   </div>
@@ -72,7 +70,7 @@
                       <div class="kpi-change negative">-5.7%</div>
                     </div>
                     <div class="kpi-value">
-                      {{ formatDays(data?.consumerMetrics?.recencyAggregation || 0) }}
+                      {{ recencyAggregation }}
                     </div>
                     <div class="kpi-title">Durchschnittliche Aktualität</div>
                   </div>
@@ -85,9 +83,7 @@
                       <div class="kpi-change positive">+3.2%</div>
                     </div>
                     <div class="kpi-value">
-                      {{
-                        formatFrequency(data?.consumerMetrics?.frequencyAggregation || 0)
-                      }}
+                      {{ frequencyAggregation }}
                     </div>
                     <div class="kpi-title">Kaufhäufigkeit</div>
                   </div>
@@ -144,9 +140,28 @@ import DataSegment from "@/components/DataSegment.vue";
 import StoreCard from "@/components/StoreCard.vue";
 import { useAnalytics } from "@/composables/useAnalytics";
 import type { AnalyticsData } from "@/types/analytics";
+import { filterDataByMonth } from "@/utils/filterMethod";
+import { useAppBarStore } from "@/stores/appBarStore";
 
 const { isLoading, error, fetchAnalytics } = useAnalytics();
 const data = ref<AnalyticsData | null>(null);
+const rawData = ref<AnalyticsData | null>(null);
+
+const appBarStore = useAppBarStore();
+
+const monetaryMean = computed(() => formatCurrency(data.value?.metrics[0]?.monetaryMean));
+const basketItemCountMean = computed(() =>
+  formatItems(data.value?.metrics[0]?.basketItemCountMean)
+);
+const customerLifetimeValue = computed(() =>
+  formatCurrency(data.value?.consumerMetrics[0]?.customerLifetimeValue || 0)
+);
+const recencyAggregation = computed(() =>
+  formatDays(data.value?.consumerMetrics[0]?.recencyAggregation || 0)
+);
+const frequencyAggregation = computed(() =>
+  formatFrequency(data.value?.consumerMetrics[0]?.frequencyAggregation || 0)
+);
 
 // Format helpers
 function formatCurrency(value?: number): string {
@@ -169,14 +184,25 @@ function formatFrequency(value?: number): string {
   return `${num.toFixed(2)} pro Monat`;
 }
 
+watch(
+  () => appBarStore.selectedMonth,
+  () => {
+    handleMonthChange(appBarStore.selectedMonth.month);
+  }
+);
+
 // Event handlers
-async function handleTimeframeChange(timeframe: string) {
-  data.value = await fetchAnalytics(timeframe);
+function handleMonthChange(month: number) {
+  if (rawData.value) {
+    const filteredData = filterDataByMonth(rawData.value, month);
+    data.value = filteredData;
+  }
 }
 
 // Initial data fetch
 onMounted(async () => {
-  data.value = await fetchAnalytics();
+  rawData.value = await fetchAnalytics();
+  handleMonthChange(appBarStore.selectedMonth);
 });
 </script>
 

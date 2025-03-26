@@ -51,17 +51,13 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { useAnalytics } from "@/composables/useAnalytics";
+import { useAppBarStore } from "@/stores/appBarStore";
 import type { CategoryProduct, AnalyticsData, Product } from "@/types/analytics";
-
-const emit = defineEmits<{
-  (e: "month-change", month: { year: number; month: number }): void;
-  (e: "category-change", category: string): void;
-}>();
 
 const route = useRoute();
 const analytics = useAnalytics();
 const analyticsData = ref<AnalyticsData | null>(null);
-
+const appBarStore = useAppBarStore();
 const selectedMonth = ref<{ year: number; month: number } | null>(null);
 const selectedCategory = ref<string | null>(null);
 
@@ -105,12 +101,12 @@ const availableCategories = computed(() => {
 
 function handleMonthChange(selectedMonthObj: { year: number; month: number }) {
   selectedMonth.value = selectedMonthObj;
-  emit("month-change", selectedMonthObj);
+  appBarStore.setMonth(selectedMonthObj.month ?? 3);
 }
 
 function handleCategoryChange(category: string) {
   selectedCategory.value = category;
-  emit("category-change", category);
+  appBarStore.setCategory(category);
 }
 
 // Set initial month and category if available
@@ -125,7 +121,7 @@ watch(
         year: latestMonth.year,
         month: latestMonth.month,
       };
-      emit("month-change", selectedMonth.value);
+      appBarStore.setMonth(selectedMonth.value.month ?? 3);
     }
   },
   { immediate: true }
@@ -137,7 +133,7 @@ watch(
   (newValue: CategoryProduct[] | undefined) => {
     if (newValue && newValue.length > 0 && !selectedCategory.value) {
       selectedCategory.value = newValue[0].category;
-      emit("category-change", selectedCategory.value);
+      appBarStore.setCategory(selectedCategory.value);
     }
   },
   { immediate: true }
@@ -146,6 +142,8 @@ watch(
 // Fetch initial data
 onMounted(async () => {
   analyticsData.value = await analytics.fetchAnalytics();
+  appBarStore.setMonth(selectedMonth.value?.month ?? 3);
+  appBarStore.setCategory(selectedCategory.value);
 });
 </script>
 

@@ -1,4 +1,3 @@
-import ApiConfig from "@/config/ApiConfig"
 
 interface LoginResponse {
     access_token: string

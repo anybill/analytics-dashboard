@@ -84,16 +84,16 @@ export function useAnalytics() {
             // Capitalize first letter of product and brand names
             if (Array.isArray(topProducts)) {
                 topProducts.forEach(product => {
-                    if (product.mappedProduct) {
-                        product.mappedProduct = product.mappedProduct.charAt(0).toUpperCase() + product.mappedProduct.slice(1);
+                    if (product.product) {
+                        product.product = product.product.charAt(0).toUpperCase() + product.product.slice(1);
                     }
                 });
             }
 
             if (Array.isArray(flopProducts)) {
                 flopProducts.forEach(product => {
-                    if (product.mappedProduct) {
-                        product.mappedProduct = product.mappedProduct.charAt(0).toUpperCase() + product.mappedProduct.slice(1);
+                    if (product.product) {
+                        product.product = product.product.charAt(0).toUpperCase() + product.product.slice(1);
                     }
                 });
             }
@@ -131,8 +131,12 @@ export function useAnalytics() {
             }
 
             return {
-                metrics: basketMetrics?.[0] ?? ({} as MetricData),
-                consumerMetrics: consumerMetrics?.[0] ?? ({} as ConsumerMetrics),
+                metrics: Array.isArray(basketMetrics)
+                    ? basketMetrics
+                    : [],
+                consumerMetrics: Array.isArray(consumerMetrics)
+                    ? consumerMetrics
+                    : [],
                 topItems: Array.isArray(topProducts)
                     ? topProducts.sort((a, b) => b.productCount - a.productCount)
                     : [],
@@ -166,6 +170,6 @@ export function useAnalytics() {
     return {
         isLoading,
         error,
-        fetchAnalytics,
+        fetchAnalytics
     };
 }

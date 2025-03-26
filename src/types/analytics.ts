@@ -46,8 +46,8 @@ export interface CategoryBrand {
 
 // Analytics API Response Types
 export interface AnalyticsData {
-    metrics: BasketMetrics;
-    consumerMetrics: ConsumerMetrics;
+    metrics: BasketMetrics[];
+    consumerMetrics: ConsumerMetrics[];
     topItems: Product[];
     topStores: Store[];
     flopItems?: Product[];
@@ -80,27 +80,7 @@ export interface QueryDto {
     expressions?: ExpressionDto[];
 }
 
-export interface ColumnDto {
-    name: string;
-    aggregator?: string;
-}
 
-export interface ExpressionDto {
-    column: string;
-    operator: string;
-    values: string[];
-}
-
-export interface SelectorDto {
-    table: string;
-    columns: ColumnDto[];
-}
-
-export interface QueryDto {
-    vendorCustomerIds: string[];
-    selector: SelectorDto;
-    expressions?: ExpressionDto[];
-}
 
 export interface MetricData {
     monetaryMean: number;
@@ -112,25 +92,12 @@ export interface MetricData {
 }
 
 export interface Product {
-    mappedProduct: string;
+    product: string;
     productCount: number;
     year: number;
     month: number;
 }
 
-export interface Store {
-    storeName: string;
-    storeVisits: number;
-    country: string;
-    city: string;
-    zip: string;
-    street: string;
-    number: string;
-    latitude: number;
-    longitude: number;
-    year: number;
-    month: number;
-}
 
 export interface ConsumerMetrics {
     monetaryAggregationMean: number;
