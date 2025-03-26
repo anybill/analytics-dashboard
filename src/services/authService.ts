@@ -30,7 +30,7 @@ class AuthService {
             Password: import.meta.env.VITE_ANYBILL_PASSWORD
         }
         try {
-            const response = await fetch('https://partner.test.anybill.de/api/user/login', {
+            const response = await fetch('https://partner.stg.anybill.de/api/user/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,4 +75,4 @@ class AuthService {
     }
 }
 
-export const authService = AuthService.getInstance() 
+export const authService = AuthService.getInstance()
