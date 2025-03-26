@@ -9,7 +9,7 @@ declare module '*.vue' {
 }
 
 declare module 'vue' {
-    import type { DefineComponent } from '@vue/runtime-core'
+    import type { DefineComponent } from 'vue'
     export { DefineComponent }
     export * from '@vue/runtime-core'
 }

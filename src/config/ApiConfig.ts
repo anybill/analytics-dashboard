@@ -7,9 +7,8 @@ export default class ApiConfig {
   static dataAnalyticsUrlProd = "https://analytics.anybill.de/api";
   static dataAnalyticsUrlLocal = "https://localhost:61010/api";
 
-  static vendorCustomerId = "D8D84435-5904-4276-133A-08DD66F5882B";
-  static username = "oscar.rembold+19032025@anybill.de";
-  static password = "Password1!";
+
+  static vendorCustomerId = import.meta.env.VITE_ANYBILL_VCID;
 
   static dataAnalyticsUrl(env?: string): string {
     if (env === "test") return this.dataAnalyticsUrlTest;

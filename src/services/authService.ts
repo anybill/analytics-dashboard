@@ -13,6 +13,8 @@ class AuthService {
     private refreshToken: string | null = null
     private tokenExpiry: Date | null = null
 
+
+
     private constructor() { }
 
     static getInstance(): AuthService {
@@ -24,8 +26,8 @@ class AuthService {
 
     async login(): Promise<void> {
         const credentials = {
-            Username: ApiConfig.username,
-            Password: ApiConfig.password
+            Username: import.meta.env.VITE_ANYBILL_USERNAME,
+            Password: import.meta.env.VITE_ANYBILL_PASSWORD
         }
         try {
             const response = await fetch('https://partner.test.anybill.de/api/user/login', {
