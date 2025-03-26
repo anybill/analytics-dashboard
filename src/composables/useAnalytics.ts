@@ -140,19 +140,19 @@ export function useAnalytics() {
                     ? topStores.sort((a, b) => b.storeVisits - a.storeVisits)
                     : [],
                 flopItems: Array.isArray(flopProducts)
-                    ? flopProducts.sort((a, b) => b.productCount - a.productCount)
+                    ? flopProducts.sort((a, b) => a.productCount - b.productCount)
                     : [],
                 topProductsByCategory: Array.isArray(topCategories)
                     ? topCategories.sort((a, b) => b.productCount - a.productCount)
                     : [],
                 flopProductsByCategory: Array.isArray(flopCategories)
-                    ? flopCategories.sort((a, b) => b.productCount - a.productCount)
+                    ? flopCategories.sort((a, b) => a.productCount - b.productCount)
                     : [],
                 topBrandsByCategory: Array.isArray(topBrands)
                     ? topBrands.sort((a, b) => b.productCount - a.productCount)
                     : [],
                 flopBrandsByCategory: Array.isArray(flopBrands)
-                    ? flopBrands.sort((a, b) => b.productCount - a.productCount)
+                    ? flopBrands.sort((a, b) => a.productCount - b.productCount)
                     : [],
             };
         } catch (e) {
