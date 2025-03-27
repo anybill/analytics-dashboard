@@ -144,16 +144,21 @@ const formatSelectedMonth = computed(() => {
 });
 
 // Create a sorted array of available dates for navigation
+interface AvailableDate {
+  year: number;
+  month: number;
+  timestamp: number;
+}
 const availableDates = computed(() => {
   if (!analyticsData.value?.topItems) return [];
 
   return analyticsData.value.topItems
-    .map((item) => ({
+    .map((item: Product) => ({
       year: item.year,
       month: item.month,
       timestamp: new Date(item.year, item.month - 1).getTime(),
     }))
-    .sort((a, b) => a.timestamp - b.timestamp);
+    .sort((a: AvailableDate, b: AvailableDate) => a.timestamp - b.timestamp);
 });
 
 // Navigation controls
@@ -180,7 +185,7 @@ const canGoToNextMonth = computed(() => {
 // Helper functions
 function isMonthAvailable(monthIndex: number) {
   return availableDates.value.some(
-    (date) => date.year === currentYear.value && date.month === monthIndex + 1
+    (date: AvailableDate) => date.year === currentYear.value && date.month === monthIndex + 1
   );
 }
 
@@ -233,7 +238,7 @@ function selectNextMonth() {
 }
 
 // Compute available months from analytics data
-const availableMonths = computed(() => {
+computed(() => {
   if (!analyticsData.value?.topItems || analyticsData.value?.topItems.length === 0)
     return [];
 
