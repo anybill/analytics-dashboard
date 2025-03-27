@@ -33,7 +33,7 @@
                     <div class="kpi-value">
                       {{ monetaryMean }}
                     </div>
-                    <div class="kpi-title">Durchschnittlicher Bestellwert</div>
+                    <div class="kpi-title">Durchschnittlicher Warenkorb</div>
                   </div>
 
                   <div class="kpi-card">
