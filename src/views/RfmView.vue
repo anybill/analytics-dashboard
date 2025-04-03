@@ -29,7 +29,7 @@
           </v-row>
 
           <!-- Customer Segments -->
-          <v-row class="mb-8">
+          <!-- <v-row class="mb-8">
             <v-col cols="12">
               <v-card elevation="2" class="chart-card">
                 <v-card-title class="d-flex align-center">
@@ -88,7 +88,7 @@
                 </v-card-text>
               </v-card>
             </v-col>
-          </v-row>
+          </v-row> -->
 
           <!-- RFM Metrics Row -->
           <v-row class="mb-8 metrics-row">

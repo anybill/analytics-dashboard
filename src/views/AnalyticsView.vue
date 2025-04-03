@@ -28,12 +28,11 @@
                       <div class="kpi-icon blue">
                         <v-icon>mdi-cart-outline</v-icon>
                       </div>
-                      <div class="kpi-change positive">+12.5%</div>
                     </div>
                     <div class="kpi-value">
                       {{ monetaryMean }}
                     </div>
-                    <div class="kpi-title">Durchschnittlicher Warenkorb</div>
+                    <div class="kpi-title">Warenkorb Mittelwert</div>
                   </div>
 
                   <div class="kpi-card">
@@ -41,12 +40,11 @@
                       <div class="kpi-icon purple">
                         <v-icon>mdi-basket</v-icon>
                       </div>
-                      <div class="kpi-change positive">+8.2%</div>
                     </div>
                     <div class="kpi-value">
                       {{ basketItemCountMean }}
                     </div>
-                    <div class="kpi-title">Durchschnittliche Warenkorbgröße</div>
+                    <div class="kpi-title">Artikelanzahl Mittelwert</div>
                   </div>
 
                   <div class="kpi-card">
@@ -54,7 +52,6 @@
                       <div class="kpi-icon green">
                         <v-icon>mdi-cash-multiple</v-icon>
                       </div>
-                      <div class="kpi-change positive">+15.3%</div>
                     </div>
                     <div class="kpi-value">
                       {{ customerLifetimeValue }}
@@ -67,7 +64,6 @@
                       <div class="kpi-icon orange">
                         <v-icon>mdi-clock-outline</v-icon>
                       </div>
-                      <div class="kpi-change negative">-5.7%</div>
                     </div>
                     <div class="kpi-value">
                       {{ recencyAggregation }}
@@ -80,7 +76,6 @@
                       <div class="kpi-icon cyan">
                         <v-icon>mdi-repeat</v-icon>
                       </div>
-                      <div class="kpi-change positive">+3.2%</div>
                     </div>
                     <div class="kpi-value">
                       {{ frequencyAggregation }}
@@ -111,7 +106,7 @@
               <v-row>
                 <v-col cols="6" lg="6">
                   <ItemsList
-                    title="TOP PRODUKTE:"
+                    title="TOP ARTIKEL:"
                     :items="data.topItems"
                     color="warning"
                     class="mb-6"
@@ -119,7 +114,7 @@
                 </v-col>
                 <v-col cols="6" lg="6">
                   <ItemsList
-                    title="FLOP PRODUKTE:"
+                    title="FLOP ARTIKEL:"
                     :items="data.flopItems"
                     color="error"
                   />

@@ -35,7 +35,7 @@
                 <v-row>
                   <v-col cols="6" lg="6">
                     <ItemsList
-                      title="TOP PRODUKTE:"
+                      title="TOP ARTIKEL:"
                       :items="getTopCategoryData()"
                       color="warning"
                       class="mb-6"
@@ -43,7 +43,7 @@
                   </v-col>
                   <v-col cols="6" lg="6">
                     <ItemsList
-                      title="FLOP PRODUKTE:"
+                      title="FLOP ARTIKEL:"
                       :items="getFlopCategoryData()"
                       color="error"
                     />
