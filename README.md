@@ -1,3 +1,28 @@
+# Docker build
+## TEAM
+```shell
+docker build --build-arg VITE_ANYBILL_USERNAME=data@prototype.de \
+  --build-arg VITE_ANYBILL_PASSWORD=Password1! \
+  --build-arg VITE_ANYBILL_VCID=fe1ee8f1-3191-4f2a-da31-08dd6ae7d8c6 \
+  --no-cache \
+  . -t swr.eu-de.otc.t-systems.com/anybill/analytics-dashboard:sha-0f3c78db
+docker push swr.eu-de.otc.t-systems.com/anybill/analytics-dashboard:sha-0f3c78db
+```
+## Q1
+```shell
+docker build --build-arg VITE_ANYBILL_USERNAME=data@prototype.de \
+  --build-arg VITE_ANYBILL_PASSWORD=Password1! \
+  --build-arg VITE_ANYBILL_VCID=2388d0cb-0fd2-4f84-6c85-08dd7c098b53 \
+  --no-cache \
+  . -t swr.eu-de.otc.t-systems.com/anybill/analytics-dashboard-q1:sha-0f3c78db
+docker push swr.eu-de.otc.t-systems.com/anybill/analytics-dashboard-q1:sha-0f3c78db
+```
+
+# K8s Deployment
+```shell
+k apply -n staging -k k8s
+```
+
 # Vuetify (Default)
 
 This is the official scaffolding tool for Vuetify, designed to give you a head start in building your new Vuetify application. It sets up a base template with all the necessary configurations and standard directory structure, enabling you to begin development without the hassle of setting up the project from scratch.

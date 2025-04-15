@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: analytics-dashboard
+  name: analytics-dashboard-q1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: analytics-dashboard
+      app: analytics-dashboard-q1
   template:
     metadata:
       labels:
-        app: analytics-dashboard
+        app: analytics-dashboard-q1
     spec:
       containers:
-        - name: analytics-dashboard
-          image: swr.eu-de.otc.t-systems.com/anybill/analytics-dashboard:v3
+        - name: analytics-dashboard-q1
+          image: swr.eu-de.otc.t-systems.com/anybill/analytics-dashboard-q1:sha-0f3c78db
           ports:
-          - containerPort: 80
+            - containerPort: 80
           env:
             - name: PORT
               value: "80"

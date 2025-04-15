@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: analytics-dashboard-api
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /api/$2
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - data-prototype.stg.anybill.de
+      secretName: data-prototype-tls-secret-prod
+  rules:
+    - host: data-prototype.stg.anybill.de
+      http:
+        paths:
+          - backend:
+              service:
+                name: analytics-api
+                port:
+                  number: 80
+            path: /api(/|$)(.*)
+            pathType: ImplementationSpecific
